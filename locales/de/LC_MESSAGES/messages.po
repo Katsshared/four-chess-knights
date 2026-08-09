@@ -1,0 +1,224 @@
+# German translations for PACKAGE package
+# German messages for PACKAGE.
+# Copyright (C) 2026 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Automatically generated, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-07-11 15:28+0200\n"
+"PO-Revision-Date: 2026-06-28 08:35+0200\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: OrFourKnights.py:60
+msgid "Four Chess Knights"
+msgstr "Vier Schachritter"
+
+#: OrFourKnights.py:61 OrHelloWorld.py:19
+msgid "Hello world"
+msgstr "Hallo Welt"
+
+#: OrFourKnights.py:62 OrHelloWorld.py:32 OrChessPuzzles.py:15
+msgid "Chess puzzles"
+msgstr "Schachrätsel"
+
+#: OrFourKnights.py:65
+msgid "This is a translatable string"
+msgstr "Dies ist eine übersetzbare Zeichenkette"
+
+#: OrSelectLanguage.py:51 OrHelloWorld.py:21
+msgid "About us"
+msgstr "Über uns"
+
+#: OrSelectLanguage.py:55
+msgid "We are the Four Chess Knights club"
+msgstr "Wir sind der Club Vier Schachritter"
+
+#: OrSelectLanguage.py:59 OrHelloWorld.py:24
+msgid "Our mission is to foster children's interest in playing chess."
+msgstr "Unsere Mission ist es, das Interesse von Kindern am Schachspiel zu fördern."
+
+#: OrSelectLanguage.py:60 OrHelloWorld.py:27
+msgid "We are a children's chess club based at a center for social and integration "
+"cooperation."
+msgstr "Wir sind ein Kinderschachclub, der in einem Zentrum für soziale und "
+"Integrationskooperation angesiedelt ist."
+
+#: OrSelectLanguage.py:61 OrHelloWorld.py:35
+msgid "Our students' achievements"
+msgstr "Die Leistungen unserer Schüler"
+
+#: OrSelectLanguage.py:62 OrHelloWorld.py:36
+msgid "Yakov (11 years old), Milena (8 years old), Lyuba (8 years old), Gosha (11 "
+"years old)"
+msgstr "Jakow (11 Jahre), Milena (8 Jahre), Ljuba (8 Jahre), Goscha (11 Jahre)"
+
+#: OrHelloWorld.py:21
+msgid "Mission"
+msgstr "Mission"
+
+#: OrHelloWorld.py:21 OrHelloWorld.py:29
+msgid "Careers"
+msgstr "Karriere"
+
+#: OrHelloWorld.py:21
+msgid "Tasks"
+msgstr "Aufgaben"
+
+#: OrHelloWorld.py:21
+msgid "Achievements"
+msgstr "Erfolge"
+
+#: OrHelloWorld.py:23
+msgid "Our Mission"
+msgstr "Unsere Mission"
+
+#: OrHelloWorld.py:26
+msgid "About Us"
+msgstr "Über uns"
+
+#: OrHelloWorld.py:30
+msgid "We are hiring! Apply today!"
+msgstr "Wir stellen ein! Bewerben Sie sich noch heute!"
+
+#: OrHelloWorld.py:33
+msgid "Mate in one move       Mate in two moves"
+msgstr "Matt in einem Zug.       Matt in zwei Zügen."
+
+#: OrChessPuzzles.py:30
+msgid "Show solution"
+msgstr "Lösung anzeigen"
+
+msgid "moves"
+msgstr "Zügen"
+
+msgid "chess"
+msgstr "Schach"
+
+msgid "Play"
+msgstr "Spielen"
+
+msgid "White"
+msgstr "Weiß"
+
+msgid "Black"
+msgstr "Schwarz"
+
+#: OrChessPuzzles.py:66
+msgid "White to mate in"
+msgstr "Weiß setzt matt in"
+
+#: OrChessPuzzles.py:68
+msgid "Black to mate in"
+msgstr "Schwarz setzt matt in"
+
+#: OrFourKnights.py:64
+msgid "Contact"
+msgstr "Kontakt"
+
+#: OrGmailContact.py:45
+msgid "Contact Form"
+msgstr "Kontaktformular"
+
+#: OrGmailContact.py:79
+msgid "Email Form"
+msgstr "E-Mail-Formular"
+
+#: OrGmailContact.py:80
+msgid "Subject"
+msgstr "Thema"
+
+#: OrGmailContact.py:80
+msgid "Please enter subject of your mail"
+msgstr "Bitte geben Sie den Betreff Ihrer E-Mail ein"
+
+#: OrGmailContact.py:81
+msgid "Full Name"
+msgstr "Vollständiger Name"
+
+#: OrGmailContact.py:81
+msgid "Please enter your full name"
+msgstr "Bitte geben Sie Ihren vollständigen Namen ein"
+
+#: OrGmailContact.py:82
+msgid "Email Address"
+msgstr "E-Mail-Adresse"
+
+#: OrGmailContact.py:82
+msgid "Please enter your email address"
+msgstr "Bitte geben Sie Ihre E-Mail-Adresse ein"
+
+#: OrGmailContact.py:83
+msgid "Email Text"
+msgstr "E-Mail-Text"
+
+#: OrGmailContact.py:83
+msgid "Please enter your text here"
+msgstr "Please enter your text here"
+
+#: OrGmailContact.py:84
+msgid "Attachment"
+msgstr "Anhang"
+
+#: OrGmailContact.py:85
+msgid "Send"
+msgstr "Senden"
+
+#: OrGmailContact.py:100
+msgid "Email sent successfully!"
+msgstr "E-Mail erfolgreich versendet!"
+
+msgid "Win"
+msgstr "Sieg"
+
+msgid "Draw"
+msgstr "Remis"
+
+msgid "Loss"
+msgstr "Niederlage"
+
+msgid "Scores"
+msgstr "Punkte"
+
+msgid "Students"
+msgstr "Studenten"
+
+msgid "Name"
+msgstr "Name"
+
+msgid "GAME OVER!"
+msgstr "SPIEL VORBEI!"
+
+msgid "Depth"
+msgstr "Tiefe"
+
+msgid "Choose White or Black"
+msgstr "Wählen Weiß oder Schwarz."
+
+msgid "Strategy"
+msgstr "Strategie"
+
+msgid "Tactic"
+msgstr "Taktik"
+
+msgid "Debut"
+msgstr "Debüt"
+
+#: OrChessStrategy.py:210
+msgid "Chess strategy"
+msgstr "Schachstrategie"
+
+#: OrChessStrategy.py:211
+msgid "10 principles of Wilhelm Steinitz"
+msgstr "10 Prinzipien von Wilhelm Steinitz"
+
+msgid "Chess editor"
+msgstr "Schach Editor"
