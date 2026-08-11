@@ -286,7 +286,8 @@ def minimax_root(depth: int, board: chess.Board) -> chess.Move:
         best_move = float("inf")
 
     moves = get_ordered_moves(board)
-    best_move_found = moves[0]
+    if moves:
+        best_move_found = moves[0]
 
     for move in moves:
         board.push(move)
@@ -447,7 +448,7 @@ def showStatus(func, board, msg, move = ""):
     
 def get_ai_move(board, depth=20):
 #    board = st.session_state.board
-    bm = next_move(3, st.session_state.depth, False)
+    bm = next_move(st.session_state.depth, board, False)
 
 #    print("GET AI MOVE", bm)
     
