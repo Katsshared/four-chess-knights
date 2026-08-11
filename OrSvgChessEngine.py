@@ -11,175 +11,374 @@ import gettext
 
 PLAYFILENAME = "play.png"
 
-PAWN_TABLE = [
+
+
+
+# this module implement's Tomasz Michniewski's Simplified Evaluation Function
+# https://www.chessprogramming.org/Simplified_Evaluation_Function
+# note that the board layouts have been flipped and the top left square is A1
+
+# fmt: off
+piece_value = {
+    chess.PAWN: 100,
+    chess.ROOK: 500,
+    chess.KNIGHT: 320,
+    chess.BISHOP: 330,
+    chess.QUEEN: 900,
+    chess.KING: 20000
+}
+
+pawnEvalWhite = [
     0,  0,  0,  0,  0,  0,  0,  0,
-    50, 50, 50, 50, 50, 50, 50, 50,
-    10, 10, 20, 30, 30, 20, 10, 10,
-    5,  5, 10, 25, 25, 10,  5,  5,
+    5, 10, 10, -20, -20, 10, 10,  5,
+    5, -5, -10,  0,  0, -10, -5,  5,
     0,  0,  0, 20, 20,  0,  0,  0,
-    5, -5,-10,  0,  0,-10, -5,  5,
-    5, 10, 10,-20,-20, 10, 10,  5,
-    0,  0,  0,  0,  0,  0,  0,  0
+    5,  5, 10, 25, 25, 10,  5,  5,
+    10, 10, 20, 30, 30, 20, 10, 10,
+    50, 50, 50, 50, 50, 50, 50, 50,
+    0, 0, 0, 0, 0, 0, 0, 0
+]
+pawnEvalBlack = list(reversed(pawnEvalWhite))
+
+knightEval = [
+    -50, -40, -30, -30, -30, -30, -40, -50,
+    -40, -20, 0, 0, 0, 0, -20, -40,
+    -30, 0, 10, 15, 15, 10, 0, -30,
+    -30, 5, 15, 20, 20, 15, 5, -30,
+    -30, 0, 15, 20, 20, 15, 0, -30,
+    -30, 5, 10, 15, 15, 10, 5, -30,
+    -40, -20, 0, 5, 5, 0, -20, -40,
+    -50, -40, -30, -30, -30, -30, -40, -50
 ]
 
-KNIGHTS_TABLE = [
-    -50,-40,-30,-30,-30,-30,-40,-50,
-    -40,-20,  0,  0,  0,  0,-20,-40,
-    -30,  0, 10, 15, 15, 10,  0,-30,
-    -30,  5, 15, 20, 20, 15,  5,-30,
-    -30,  0, 15, 20, 20, 15,  0,-30,
-    -30,  5, 10, 15, 15, 10,  5,-30,
-    -40,-20,  0,  5,  5,  0,-20,-40,
-    -50,-40,-30,-30,-30,-30,-40,-50
+bishopEvalWhite = [
+    -20, -10, -10, -10, -10, -10, -10, -20,
+    -10, 5, 0, 0, 0, 0, 5, -10,
+    -10, 10, 10, 10, 10, 10, 10, -10,
+    -10, 0, 10, 10, 10, 10, 0, -10,
+    -10, 5, 5, 10, 10, 5, 5, -10,
+    -10, 0, 5, 10, 10, 5, 0, -10,
+    -10, 0, 0, 0, 0, 0, 0, -10,
+    -20, -10, -10, -10, -10, -10, -10, -20
+]
+bishopEvalBlack = list(reversed(bishopEvalWhite))
+
+rookEvalWhite = [
+    0, 0, 0, 5, 5, 0, 0, 0,
+    -5, 0, 0, 0, 0, 0, 0, -5,
+    -5, 0, 0, 0, 0, 0, 0, -5,
+    -5, 0, 0, 0, 0, 0, 0, -5,
+    -5, 0, 0, 0, 0, 0, 0, -5,
+    -5, 0, 0, 0, 0, 0, 0, -5,
+    5, 10, 10, 10, 10, 10, 10, 5,
+    0, 0, 0, 0, 0, 0, 0, 0
+]
+rookEvalBlack = list(reversed(rookEvalWhite))
+
+queenEval = [
+    -20, -10, -10, -5, -5, -10, -10, -20,
+    -10, 0, 0, 0, 0, 0, 0, -10,
+    -10, 0, 5, 5, 5, 5, 0, -10,
+    -5, 0, 5, 5, 5, 5, 0, -5,
+    0, 0, 5, 5, 5, 5, 0, -5,
+    -10, 5, 5, 5, 5, 5, 0, -10,
+    -10, 0, 5, 0, 0, 0, 0, -10,
+    -20, -10, -10, -5, -5, -10, -10, -20
 ]
 
-BISHOPS_TABLE = [
-    -20,-10,-10,-10,-10,-10,-10,-20,
-    -10,  0,  0,  0,  0,  0,  0,-10,
-    -10,  0,  5, 10, 10,  5,  0,-10,
-    -10,  5,  5, 10, 10,  5,  5,-10,
-    -10,  0, 10, 10, 10, 10,  0,-10,
-    -10, 10, 10, 10, 10, 10, 10,-10,
-    -10,  5,  0,  0,  0,  0,  5,-10,
-    -20,-10,-10,-10,-10,-10,-10,-20
+kingEvalWhite = [
+    20, 30, 10, 0, 0, 10, 30, 20,
+    20, 20, 0, 0, 0, 0, 20, 20,
+    -10, -20, -20, -20, -20, -20, -20, -10,
+    20, -30, -30, -40, -40, -30, -30, -20,
+    -30, -40, -40, -50, -50, -40, -40, -30,
+    -30, -40, -40, -50, -50, -40, -40, -30,
+    -30, -40, -40, -50, -50, -40, -40, -30,
+    -30, -40, -40, -50, -50, -40, -40, -30
 ]
+kingEvalBlack = list(reversed(kingEvalWhite))
 
-ROOKS_TABLE = [
-    0,  0,  0,  0,  0,  0,  0,  0,
-    5, 10, 10, 10, 10, 10, 10,  5,
-    -5,  0,  0,  0,  0,  0,  0, -5,
-    -5,  0,  0,  0,  0,  0,  0, -5,
-    -5,  0,  0,  0,  0,  0,  0, -5,
-    -5,  0,  0,  0,  0,  0,  0, -5,
-    -5,  0,  0,  0,  0,  0,  0, -5,
-    0,  0,  0,  5,  5,  0,  0,  0
+kingEvalEndGameWhite = [
+    50, -30, -30, -30, -30, -30, -30, -50,
+    -30, -30,  0,  0,  0,  0, -30, -30,
+    -30, -10, 20, 30, 30, 20, -10, -30,
+    -30, -10, 30, 40, 40, 30, -10, -30,
+    -30, -10, 30, 40, 40, 30, -10, -30,
+    -30, -10, 20, 30, 30, 20, -10, -30,
+    -30, -20, -10,  0,  0, -10, -20, -30,
+    -50, -40, -30, -20, -20, -30, -40, -50
 ]
-
-QUEENS_TABLE = [
-    -20,-10,-10, -5, -5,-10,-10,-20,
-    -10,  0,  0,  0,  0,  0,  0,-10,
-    -10,  0,  5,  5,  5,  5,  0,-10,
-    -5,  0,  5,  5,  5,  5,  0, -5,
-    0,  0,  5,  5,  5,  5,  0, -5,
-    -10,  5,  5,  5,  5,  5,  0,-10,
-    -10,  0,  5,  0,  0,  0,  0,-10,
-    -20,-10,-10, -5, -5,-10,-10,-20
-]
-
-KINGS_TABLE = [
-    -50,-40,-30,-20,-20,-30,-40,-50,
-    -30,-20,-10,  0,  0,-10,-20,-30,
-    -30,-10, 20, 30, 30, 20,-10,-30,
-    -30,-10, 30, 40, 40, 30,-10,-30,
-    -30,-10, 30, 40, 40, 30,-10,-30,
-    -30,-10, 20, 30, 30, 20,-10,-30,
-    -30,-30,  0,  0,  0,  0,-30,-30,
-    -50,-30,-30,-30,-30,-30,-30,-50
-]
+kingEvalEndGameBlack = list(reversed(kingEvalEndGameWhite))
+# fmt: on
 
 
-def evaluate(board):
+def move_value(board: chess.Board, move: chess.Move, endgame: bool) -> float:
     """
-    Given a particular board, evaluates it and gives it a score.
-    A higher score indicates it is better for white.
-    A lower score indicates it is better for black.
-
-    Args:
-        board (chess.Board): A chess board.
-
-    Returns:
-        int: A score indicating the state of the board (higher is good for white, lower is good for black)
-    """    
-
-    boardvalue = 0
-    
-    wp = len(board.pieces(chess.PAWN, chess.WHITE))
-    bp = len(board.pieces(chess.PAWN, chess.BLACK))
-    wn = len(board.pieces(chess.KNIGHT, chess.WHITE))
-    bn = len(board.pieces(chess.KNIGHT, chess.BLACK))
-    wb = len(board.pieces(chess.BISHOP, chess.WHITE))
-    bb = len(board.pieces(chess.BISHOP, chess.BLACK))
-    wr = len(board.pieces(chess.ROOK, chess.WHITE))
-    br = len(board.pieces(chess.ROOK, chess.BLACK))
-    wq = len(board.pieces(chess.QUEEN, chess.WHITE))
-    bq = len(board.pieces(chess.QUEEN, chess.BLACK))
-    
-    material = 100 * (wp - bp) + 300 * (wn - bn) + 300 * (wb - bb) + 500 * (wr - br) + 900 * (wq - bq)
-    
-    pawn_sum = sum([PAWN_TABLE[i] for i in board.pieces(chess.PAWN, chess.WHITE)])
-    pawn_sum = pawn_sum + sum([-PAWN_TABLE[chess.square_mirror(i)] for i in board.pieces(chess.PAWN, chess.BLACK)])
-    knight_sum = sum([KNIGHTS_TABLE[i] for i in board.pieces(chess.KNIGHT, chess.WHITE)])
-    knight_sum = knight_sum + sum([-KNIGHTS_TABLE[chess.square_mirror(i)] for i in board.pieces(chess.KNIGHT, chess.BLACK)])
-    bishop_sum = sum([BISHOPS_TABLE[i] for i in board.pieces(chess.BISHOP, chess.WHITE)])
-    bishop_sum = bishop_sum + sum([-BISHOPS_TABLE[chess.square_mirror(i)] for i in board.pieces(chess.BISHOP, chess.BLACK)])
-    rook_sum = sum([ROOKS_TABLE[i] for i in board.pieces(chess.ROOK, chess.WHITE)]) 
-    rook_sum = rook_sum + sum([-ROOKS_TABLE[chess.square_mirror(i)] for i in board.pieces(chess.ROOK, chess.BLACK)])
-    queens_sum = sum([QUEENS_TABLE[i] for i in board.pieces(chess.QUEEN, chess.WHITE)]) 
-    queens_sum = queens_sum + sum([-QUEENS_TABLE[chess.square_mirror(i)] for i in board.pieces(chess.QUEEN, chess.BLACK)])
-    kings_sum = sum([KINGS_TABLE[i] for i in board.pieces(chess.KING, chess.WHITE)]) 
-    kings_sum = kings_sum + sum([-KINGS_TABLE[chess.square_mirror(i)] for i in board.pieces(chess.KING, chess.BLACK)])
-    
-    boardvalue = material + pawn_sum + knight_sum + bishop_sum + rook_sum + queens_sum + kings_sum
-    
-    return boardvalue
-
-
-def determine_best_move(board, is_white=True, depth = 3):
-    """Given a board, determines the best move.
-
-    Args:
-        board (chess.Board): A chess board.
-        is_white (bool): Whether the particular move is for white or black.
-        depth (int, optional): The number of moves looked ahead.
-
-    Returns:
-        chess.Move: The best predicated move.
+    How good is a move?
+    A promotion is great.
+    A weaker piece taking a stronger piece is good.
+    A stronger piece taking a weaker piece is bad.
+    Also consider the position change via piece-square table.
     """
-    if "depth" in st.session_state:
-        depth = st.session_state.depth
-    if "white" in st.session_state:
-        is_white = False if st.session_state.white == chess.BLACK else True 
+    if move.promotion is not None:
+        return -float("inf") if board.turn == chess.BLACK else float("inf")
 
-    
-    best_move = -100000 if is_white else 100000
-    best_final = None
-    for move in board.legal_moves:
+    _piece = board.piece_at(move.from_square)
+    if _piece:
+        _from_value = evaluate_piece(_piece, move.from_square, endgame)
+        _to_value = evaluate_piece(_piece, move.to_square, endgame)
+        position_change = _to_value - _from_value
+    else:
+        raise Exception(f"A piece was expected at {move.from_square}")
+
+    capture_value = 0.0
+    if board.is_capture(move):
+        capture_value = evaluate_capture(board, move)
+
+    current_move_value = capture_value + position_change
+    if board.turn == chess.BLACK:
+        current_move_value = -current_move_value
+
+    return current_move_value
+
+
+def evaluate_capture(board: chess.Board, move: chess.Move) -> float:
+    """
+    Given a capturing move, weight the trade being made.
+    """
+    if board.is_en_passant(move):
+        return piece_value[chess.PAWN]
+    _to = board.piece_at(move.to_square)
+    _from = board.piece_at(move.from_square)
+    if _to is None or _from is None:
+        raise Exception(
+            f"Pieces were expected at _both_ {move.to_square} and {move.from_square}"
+        )
+    return piece_value[_to.piece_type] - piece_value[_from.piece_type]
+
+
+def evaluate_piece(piece: chess.Piece, square: chess.Square, end_game: bool) -> int:
+    piece_type = piece.piece_type
+    mapping = []
+    if piece_type == chess.PAWN:
+        mapping = pawnEvalWhite if piece.color == chess.WHITE else pawnEvalBlack
+    if piece_type == chess.KNIGHT:
+        mapping = knightEval
+    if piece_type == chess.BISHOP:
+        mapping = bishopEvalWhite if piece.color == chess.WHITE else bishopEvalBlack
+    if piece_type == chess.ROOK:
+        mapping = rookEvalWhite if piece.color == chess.WHITE else rookEvalBlack
+    if piece_type == chess.QUEEN:
+        mapping = queenEval
+    if piece_type == chess.KING:
+        # use end game piece-square tables if neither side has a queen
+        if end_game:
+            mapping = (
+                kingEvalEndGameWhite
+                if piece.color == chess.WHITE
+                else kingEvalEndGameBlack
+            )
+        else:
+            mapping = kingEvalWhite if piece.color == chess.WHITE else kingEvalBlack
+
+    return mapping[square]
+
+
+def evaluate_board(board: chess.Board) -> float:
+    """
+    Evaluates the full board and determines which player is in a most favorable position.
+    The sign indicates the side:
+        (+) for white
+        (-) for black
+    The magnitude, how big of an advantage that player has
+    """
+    total = 0
+    end_game = check_end_game(board)
+
+    for square in chess.SQUARES:
+        piece = board.piece_at(square)
+        if not piece:
+            continue
+
+        value = piece_value[piece.piece_type] + evaluate_piece(piece, square, end_game)
+        total += value if piece.color == chess.WHITE else -value
+
+    return total
+
+
+def check_end_game(board: chess.Board) -> bool:
+    """
+    Are we in the end game?
+    Per Michniewski:
+    - Both sides have no queens or
+    - Every side which has a queen has additionally no other pieces or one minorpiece maximum.
+    """
+    queens = 0
+    minors = 0
+
+    for square in chess.SQUARES:
+        piece = board.piece_at(square)
+        if piece and piece.piece_type == chess.QUEEN:
+            queens += 1
+        if piece and (
+            piece.piece_type == chess.BISHOP or piece.piece_type == chess.KNIGHT
+        ):
+            minors += 1
+
+    if queens == 0 or (queens == 2 and minors <= 1):
+        return True
+
+    return False
+
+from typing import Dict, List, Any
+
+debug_info: Dict[str, Any] = {}
+
+
+MATE_SCORE     = 1000000000
+MATE_THRESHOLD =  999000000
+
+
+def next_move(depth: int, board: chess.Board, debug=True) -> chess.Move:
+    """
+    What is the next best move?
+    """
+    debug_info.clear()
+    debug_info["nodes"] = 0
+#    t0 = time.time()
+
+    move = minimax_root(depth, board)
+
+#    debug_info["time"] = time.time() - t0
+    if debug == True:
+        print(f"info {debug_info}")
+    return move
+
+
+def get_ordered_moves(board: chess.Board) -> List[chess.Move]:
+    """
+    Get legal moves.
+    Attempt to sort moves by best to worst.
+    Use piece values (and positional gains/losses) to weight captures.
+    """
+    end_game = check_end_game(board)
+
+    def orderer(move):
+        return move_value(board, move, end_game)
+
+    in_order = sorted(
+        board.legal_moves, key=orderer, reverse=(board.turn == chess.WHITE)
+    )
+    return list(in_order)
+
+
+def minimax_root(depth: int, board: chess.Board) -> chess.Move:
+    """
+    What is the highest value move per our evaluation function?
+    """
+    # White always wants to maximize (and black to minimize)
+    # the board score according to evaluate_board()
+    board = st.session_state.board
+#    maximize = st.session_state.white == chess.WHITE
+    maximize = board.turn == chess.WHITE
+    best_move = -float("inf")
+    if not maximize:
+        best_move = float("inf")
+
+    moves = get_ordered_moves(board)
+    best_move_found = moves[0]
+
+    for move in moves:
         board.push(move)
-        value = minimax_helper(depth - 1, board, -10000, 10000, not is_white)
+        # Checking if draw can be claimed at this level, because the threefold repetition check
+        # can be expensive. This should help the bot avoid a draw if it's not favorable
+        # https://python-chess.readthedocs.io/en/latest/core.html#chess.Board.can_claim_draw
+        if board.can_claim_draw():
+            value = 0.0
+        else:
+            value = minimax(depth - 1, board, -float("inf"), float("inf"), not maximize)
         board.pop()
-        if (is_white and value > best_move) or (not is_white and value < best_move):
+        if maximize and value >= best_move:
             best_move = value
-            best_final = move
-            
-#    print("BEST FINAL", best_final)
-    return best_final
+            best_move_found = move
+        elif not maximize and value <= best_move:
+            best_move = value
+            best_move_found = move
 
-def minimax_helper(depth, board, alpha, beta, is_maximizing):
-    if depth <= 0 or board.is_game_over():
-        return evaluate(board)
+    return best_move_found
 
-    if is_maximizing:
-        best_move = -100000
-        for move in board.legal_moves:
+
+def minimax(
+    depth: int,
+    board: chess.Board,
+    alpha: float,
+    beta: float,
+    is_maximising_player: bool,
+) -> float:
+    """
+    Core minimax logic.
+    https://en.wikipedia.org/wiki/Minimax
+    """
+    debug_info["nodes"] += 1
+
+    if board.is_checkmate():
+        # The previous move resulted in checkmate
+        return -MATE_SCORE if is_maximising_player else MATE_SCORE
+    # When the game is over and it's not a checkmate it's a draw
+    # In this case, don't evaluate. Just return a neutral result: zero
+    elif board.is_game_over():
+        return 0
+
+    if depth == 0:
+        return evaluate_board(board)
+
+    if is_maximising_player:
+        best_move = -float("inf")
+        moves = get_ordered_moves(board)
+        for move in moves:
             board.push(move)
-            value = minimax_helper(depth - 1, board, alpha, beta, False)
+            curr_move = minimax(depth - 1, board, alpha, beta, not is_maximising_player)
+            # Each ply after a checkmate is slower, so they get ranked slightly less
+            # We want the fastest mate!
+            if curr_move > MATE_THRESHOLD:
+                curr_move -= 1
+            elif curr_move < -MATE_THRESHOLD:
+                curr_move += 1
+            best_move = max(
+                best_move,
+                curr_move,
+            )
             board.pop()
-            best_move = max(best_move, value)
             alpha = max(alpha, best_move)
             if beta <= alpha:
-                break
+                return best_move
         return best_move
     else:
-        best_move = 100000
-        for move in board.legal_moves:
+        best_move = float("inf")
+        moves = get_ordered_moves(board)
+        for move in moves:
             board.push(move)
-            value = minimax_helper(depth - 1, board, alpha, beta, True)
+            curr_move = minimax(depth - 1, board, alpha, beta, not is_maximising_player)
+            if curr_move > MATE_THRESHOLD:
+                curr_move -= 1
+            elif curr_move < -MATE_THRESHOLD:
+                curr_move += 1
+            best_move = min(
+                best_move,
+                curr_move,
+            )
             board.pop()
-            best_move = min(best_move, value)
             beta = min(beta, best_move)
             if beta <= alpha:
-                break
+                return best_move
         return best_move
+    
+    
+    
+
+
+
+
 
 
 if "sellang" not in st.session_state:
@@ -247,7 +446,8 @@ def showStatus(func, board, msg, move = ""):
 
     
 def get_ai_move(board, depth=20):
-    bm = determine_best_move(board, True)
+#    board = st.session_state.board
+    bm = next_move(3, st.session_state.depth, False)
 
 #    print("GET AI MOVE", bm)
     
