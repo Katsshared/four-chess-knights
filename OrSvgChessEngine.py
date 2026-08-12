@@ -9,7 +9,7 @@ import chess.svg
 
 import gettext
 
-PLAYFILENAME = "play.png"
+PLAYAIFILENAME = "playai.png"
 
 
 
@@ -278,16 +278,17 @@ def minimax_root(depth: int, board: chess.Board) -> chess.Move:
     """
     # White always wants to maximize (and black to minimize)
     # the board score according to evaluate_board()
-    board = st.session_state.board
-#    maximize = st.session_state.white == chess.WHITE
+    board = st.session_state.boardai
+#    maximize = st.session_state.colorai == chess.WHITE
     maximize = board.turn == chess.WHITE
     best_move = -float("inf")
     if not maximize:
         best_move = float("inf")
 
     moves = get_ordered_moves(board)
+    best_move_found = None
     if moves:
-        best_move_found = moves[0]
+        best_move_found = moves[0]        
 
     for move in moves:
         board.push(move)
@@ -389,17 +390,28 @@ localizator = gettext.translation('messages', localedir='locales', languages=[st
 localizator.install() 
 _ = localizator.gettext 
 
-wb = ""
-depth =""
-if "depth" in st.session_state:
-    depth = " " + _("Depth") + " " + str(st.session_state.depth)
-if "white" in st.session_state:
-    wb = _("White") if st.session_state.white == chess.WHITE else _("Black")
-st.title(_("Play") + " " + _("chess") + " " + wb + depth)
 
-board_one = chess.Board()
-if "board" not in st.session_state:
-    st.session_state.board = board_one
+def get_titleai():
+    wb = ""
+    depth =""
+    if "depth" in st.session_state:
+        depth = " " + _("Depth") + " " + str(st.session_state.depth)
+    if "colorai" in st.session_state:
+        wb = _("White") if st.session_state.colorai == chess.WHITE else _("Black")
+    
+    title = _("Play") + " " + _("chess") + " " + wb + depth
+
+    return title
+
+st.title(get_titleai())
+
+def get_boardai():
+    board_ai = chess.Board()
+    return board_ai
+
+board_ai = chess.Board()
+if "boardai" not in st.session_state:
+    st.session_state.boardai = get_boardai()
 
 #@st.dialog("Choose promotion", dismissible=True)
 def choosePromotion():
@@ -417,7 +429,7 @@ def choosePromotion():
 def showHistory():
     ls = []
     j = 1
-    for i, move in enumerate(st.session_state.history):
+    for i, move in enumerate(st.session_state.historyai):
         text = ""
         if i % 2 == 0:
             text = f"{j}. {move}"
@@ -426,13 +438,13 @@ def showHistory():
             j = j + 1            
         ls.append(text)
     st.markdown(ls)
-#    print(st.session_state.history)
+#    print(st.session_state.historyai)
 
 def addHistory(move, ai=True):
     if ai:
-        st.session_state.history.append(f"AI: {move.uci()}")
+        st.session_state.historyai.append(f"AI: {move.uci()}")
     else:
-        st.session_state.history.append(f"Human: {move.uci()}")
+        st.session_state.historyai.append(f"Human: {move.uci()}")
                
 def showStatus(func, board, msg, move = ""):
     with st.status("", expanded=False) as status:
@@ -447,7 +459,7 @@ def showStatus(func, board, msg, move = ""):
 
     
 def get_ai_move(board, depth=20):
-#    board = st.session_state.board
+#    board = st.session_state.boardai
     bm = next_move(st.session_state.depth, board, False)
 
 #    print("GET AI MOVE", bm)
@@ -463,11 +475,11 @@ def render_svg(svg_string):
 
 def saveBoard(board):
     img = pyvips.Image.new_from_buffer(chess.svg.board(board).encode(), "")
-    img.pngsave(PLAYFILENAME)
+    img.pngsave(PLAYAIFILENAME)
 
 
 def updateBoard(board, save = True):
-    bd = st.session_state.setboard
+    bd = st.session_state.setboardai
 #    board.clear()
     for key in bd.keys():
         (pc, cl) = bd[key] 
@@ -558,7 +570,7 @@ def isMovePromotion(board, move):
     return False        
  
 def makeUciMove(board, uci_move, prom = False):
-    bd = st.session_state.setboard
+    bd = st.session_state.setboardai
 
 #    print("UCI MOVE", uci_move)
     
@@ -576,26 +588,26 @@ def makeUciMove(board, uci_move, prom = False):
 def makeMove(board, x1, y1, x2, y2):
     fr = coors2square(x1, y1)
     to = coors2square(x2, y2)
-    bd = st.session_state.setboard
+    bd = st.session_state.setboardai
     
     if fr == to:
         return None
     (pfr, cfr) = bd[fr]
     (pto, cto) = bd[to]
-    if cfr != st.session_state.white:
+    if cfr != st.session_state.colorai:
         return None
      
     move = chess.Move(fr, to)  
     cast = isMoveCastling(board, move)
     if cast:
-        if st.session_state.white == chess.WHITE:
+        if st.session_state.colorai == chess.WHITE:
             if to == 6:
                 bd[to - 1] = bd[to + 1]
                 bd[to + 1] = (None, None)
             elif to == 2:
                 bd[to + 1] = bd[to - 2]
                 bd[to - 2] = (None, None)
-        elif st.session_state.white == chess.BLACK:
+        elif st.session_state.colorai == chess.BLACK:
             if to == 62:
                 bd[to - 1] = bd[to + 1]
                 bd[to + 1] = (None, None)
@@ -624,7 +636,7 @@ def makeMove(board, x1, y1, x2, y2):
     return 1
     
 def add_point():
-    board = st.session_state.board    
+    board = st.session_state.boardai    
     if board.is_game_over():
         return
     
@@ -652,7 +664,7 @@ def add_point():
         if prom:
             pr = choosePromotion()
             ai_move = chess.Move(ai_move.from_square, ai_move.to_square, promotion=pr)
-            bd = st.session_state.setboard
+            bd = st.session_state.setboardai
             pfr, cfr = bd[ai_move.from_square]
             bd[ai_move.to_square] = (pr, cfr)
 
@@ -676,18 +688,18 @@ def set_board(board, side = chess.WHITE):
     return bd   
     
 def selectBlackWhite(board):
-    if "white" not in st.session_state:
+    if "colorai" not in st.session_state:
         sel = {"NONE":None, _("White"):chess.WHITE, _("Black"):chess.BLACK}
-        bw = st.radio(_("Choose White or Black"), sel.keys(), horizontal=True)
+        bw = st.radio(_("Choose White or Black"), sel.keys(), key = "ai", horizontal=True)
         depth = st.slider(_("Depth"), 1, 4, 3)
 
         if sel[bw] in [chess.WHITE, chess.BLACK]:    
             
-            if "setboard" not in st.session_state:
+            if "setboardai" not in st.session_state:
                 bd = set_board(board, bw)    
-                st.session_state.setboard = bd
-                st.session_state.white = sel[bw]
-                st.session_state.history = []
+                st.session_state.setboardai = bd
+                st.session_state.colorai = sel[bw]
+                st.session_state.historyai = []
                 st.session_state.depth = depth
         #        print(bd)
         
@@ -706,7 +718,7 @@ def selectBlackWhite(board):
                         if prom:
                             pr = choosePromotion()
                             ai_move = chess.Move(ai_move.from_square, ai_move.to_square, promotion=pr)
-                            bd = st.session_state.setboard
+                            bd = st.session_state.setboardai
                             pfr, cfr = bd[ai_move.from_square]
                             bd[ai_move.to_square] = (pr, cfr)
 
@@ -730,17 +742,17 @@ def main():
     
         try:                
             streamlit_image_coordinates(
-                PLAYFILENAME,
+                PLAYAIFILENAME,
                 key="pil",
                 click_and_drag=True,
                 on_click=add_point
                 )
 
-            with open(PLAYFILENAME, "rb") as file:
+            with open(PLAYAIFILENAME, "rb") as file:
                 st.download_button(
                     label=_("Download"),
                     data=file,
-                    file_name=PLAYFILENAME,
+                    file_name=PLAYAIFILENAME,
                     mime="image/png"
                 )                                   
         except Exception as e:
@@ -752,4 +764,4 @@ def main():
 
         
 if __name__ == '__main__':
-    selectBlackWhite(st.session_state.board)
+    selectBlackWhite(st.session_state.boardai)

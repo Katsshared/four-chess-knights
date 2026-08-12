@@ -58,6 +58,7 @@ pg = st.navigation([
     st.Page("OrChessTactic.py", title=_("Tactic"), icon="♟️"),
     st.Page("OrChessDebut.py", title=_("Debut"), icon="♟️"),
     st.Page("OrSvgChessEngine.py", title=_("Play") + " " + _("chess"), icon="♟️"),
+    st.Page("OrSvgLichessAi.py", title=_("Play") + " " + _("chess") + " (LICHESS)", icon="♟️"),
 #    st.Page("OrSvgChessStockfish.py", title=_("Play") + " " + _("chess"), icon="♟️"),
     st.Page("OrChessPuzzles.py", title=_("Chess puzzles"), icon="♟️"),
     st.Page("OrSvgEditChessBoard.py", title=_("Chess editor"), icon="♟️"),
