@@ -1,4 +1,14 @@
+'''
 
+st.page_link("http://www.google.com", label="Google", icon="🌎")
+def page_1():
+    st.title("Page 1")
+    st.page_link("page_2.py", query_params={"utm_source": "page_1"})
+
+pg = st.navigation([page_1, "page_2.py"])
+pg.run()
+
+'''
 import pyvips
 
 import streamlit as st
@@ -166,13 +176,12 @@ def get_ai_move(board, depth=20):
     board = st.session_state.boardli
     game_id  = st.session_state.gameid       
     move, move_count = listen_for_opponent_move(game_id, get_headers(), board, move_count)
-#    if ai_move_san:
-#        print("Stockfish's move:", ai_move_san)
     
     cast = isMoveCastling(board, move)
     if cast:
         bd = st.session_state.setboardli 
-        move_uci = move.uci()    
+        move_uci = move.uci()
+        print("CASTLING", move_uci)    
 #        fr = chess.parse_square(move_uci[0] + move_uci[1])
         to = chess.parse_square(move_uci[2] + move_uci[3])
 
@@ -180,17 +189,24 @@ def get_ai_move(board, depth=20):
             if to == 6:
                 bd[to - 1] = bd[to + 1]
                 bd[to + 1] = (None, None)
+#                board.remove_piece_at(to + 1)
             elif to == 2:
                 bd[to + 1] = bd[to - 2]
                 bd[to - 2] = (None, None)
+#                board.remove_piece_at(to - 2)
         elif st.session_state.colorli == chess.BLACK:
             if to == 62:
                 bd[to - 1] = bd[to + 1]
                 bd[to + 1] = (None, None)
+#                board.remove_piece_at(to + 1)
             elif to == 58:
                 bd[to + 1] = bd[to - 2]
                 bd[to - 2] = (None, None)
+#                board.remove_piece_at(to - 2)
 
+        board.push(move)
+        updateBoard(board)   
+        
     return move
 
 def render_svg(svg_string):
@@ -364,7 +380,7 @@ def makeMove(board, x1, y1, x2, y2):
     updateBoard(board)
     
     uci_move = move.uci()
-    game_id = board = st.session_state.gameid
+    game_id = st.session_state.gameid
     move_url = f'https://lichess.org/api/board/game/{game_id}/move/{uci_move}'
     move_response = requests.post(move_url, headers=get_headers())
     if move_response.status_code != 200:
@@ -389,10 +405,10 @@ def add_point():
     
 #    print("POS=", stockfi.get_fen_position())
 #    print("BPOS=", board.fen())
-
-    ai_move_uci = showStatus(get_ai_move, board, _("AI thinking ..."), None)
-    showStatus(None, None, _("AI: " + str(ai_move_uci)))
-    if ai_move_uci in board.legal_moves:
+    ai_move_uci =  get_ai_move(board)
+#    ai_move_uci = showStatus(get_ai_move, board, _("AI thinking ..."), None)
+#    showStatus(None, None, _("AI: " + str(ai_move_uci)))
+    if (ai_move_uci in board.legal_moves) or isMoveCastling(board, ai_move_uci):
         ai_move = ai_move_uci
 #        ai_move = chess.Move.from_uci(ai_move_uci)
         
@@ -440,12 +456,13 @@ def selectBlackWhite(board):
                 st.session_state.difficulty = diff
                 st.session_state.gameid = challenge_ai()
         #        print(bd)
-        
+
                 if sel[bw] == chess.BLACK:
                     
-                    ai_move_uci = showStatus(get_ai_move, board, _("AI thinking ..."))
+                    ai_move_uci =  get_ai_move(board)
+#                    ai_move_uci = showStatus(get_ai_move, board, _("AI thinking ..."))
 #                    print("AI MOVE UCI", ai_move_uci)
-                    showStatus(None, None, _("AI: " + str(ai_move_uci)))
+#                    showStatus(None, None, _("AI: " + str(ai_move_uci)))
                     if ai_move_uci in board.legal_moves:
                         ai_move = ai_move_uci
 #                        ai_move = chess.Move.from_uci(ai_move_uci)
@@ -470,6 +487,12 @@ def selectBlackWhite(board):
                 st.rerun()                      
     else:
         main()
+
+def navLichess(game_id):
+    st.page_link(f"https://lichess.org/{game_id}", label="Lichess", icon="🌎")
+#    pg = st.navigation([st.Page("https://lichess.org/{game_id}")])
+#    pg.run()
+    
     
        
 def main():    
@@ -485,14 +508,18 @@ def main():
                 click_and_drag=True,
                 on_click=add_point
                 )
+            with st.container(horizontal=True, horizontal_alignment="left"):
+                game_id = st.session_state.gameid
+                st.page_link(f"https://lichess.org/{game_id}", label="LICHESS", icon="🌎")
 
-            with open(PLAYLIFILENAME, "rb") as file:
-                st.download_button(
-                    label=_("Download"),
-                    data=file,
-                    file_name=PLAYLIFILENAME,
-                    mime="image/png"
-                )                                   
+                with open(PLAYLIFILENAME, "rb") as file:
+                    st.download_button(
+                        label=_("Download"),
+                        data=file,
+                        file_name=PLAYLIFILENAME,
+                        mime="image/png"
+                    )
+    
         except Exception as e:
             st.error(f"Failed:\n {e}")
             
