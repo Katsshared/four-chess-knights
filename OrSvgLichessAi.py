@@ -476,13 +476,7 @@ def selectBlackWhite(board):
                 main() 
                 st.rerun()                      
     else:
-        main()
-
-def navLichess(game_id):
-    st.page_link(f"https://lichess.org/{game_id}", label="Lichess", icon="🌎")
-#    pg = st.navigation([st.Page("https://lichess.org/{game_id}")])
-#    pg.run()
-    
+        main()    
     
        
 def main():    
