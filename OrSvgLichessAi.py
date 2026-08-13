@@ -17,13 +17,10 @@ PLAYLIFILENAME = "playli.png"
 import requests
 import json
 import time
+import OrKatTkn
 
-
-#
-# lichesscli.py
-#
 def  get_token():
-    return 'lip_dnzZS2L8WWxeqbeEriGq'
+    return OrKatTkn.key2 + OrKatTkn.key1
 
 def  get_headers():
     token = get_token()
