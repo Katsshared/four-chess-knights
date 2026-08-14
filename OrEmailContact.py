@@ -17,7 +17,7 @@ from email.mime.application import MIMEApplication
 
 SENDER_ADDRESS="arnchessclub@gmail.com"
 # google Sign in with app passwords
-#SENDER_PASSWORD="aajqopqlwbapjnce"
+#SENDER_PASSWORD=""
 SMTP_SERVER_ADDRESS="smtp.gmail.com"
 PORT=587
 
