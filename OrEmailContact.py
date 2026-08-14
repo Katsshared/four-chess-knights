@@ -17,9 +17,14 @@ from email.mime.application import MIMEApplication
 
 SENDER_ADDRESS="arnchessclub@gmail.com"
 # google Sign in with app passwords
-SENDER_PASSWORD="aajqopqlwbapjnce"
+#SENDER_PASSWORD="aajqopqlwbapjnce"
 SMTP_SERVER_ADDRESS="smtp.gmail.com"
 PORT=587
+
+import OrKatTkn
+
+def  get_pwd():
+    return OrKatTkn.key4 + OrKatTkn.key3
 
 def send_email(sender, password, receiver, smtp_server, 
 smtp_port, email_message, subject, attachment=None):
@@ -59,8 +64,8 @@ if __name__ == '__main__':
             
             message = extra_info + text
             try:                
-                send_email(sender=SENDER_ADDRESS, password=SENDER_PASSWORD, receiver=SENDER_ADDRESS, smtp_server=SMTP_SERVER_ADDRESS, 
-#                send_email(sender=SENDER_ADDRESS, password=SENDER_PASSWORD, receiver=email, smtp_server=SMTP_SERVER_ADDRESS, 
+                send_email(sender=SENDER_ADDRESS, password=get_pwd(), receiver=SENDER_ADDRESS, smtp_server=SMTP_SERVER_ADDRESS, 
+#                send_email(sender=SENDER_ADDRESS, password=get_pwd(), receiver=email, smtp_server=SMTP_SERVER_ADDRESS, 
                 smtp_port=PORT, email_message=message, subject=subject, attachment=uploaded_file)
         
                 st.success(_("Email sent successfully!") + ' 🚀')
