@@ -34,6 +34,7 @@ def listen_for_opponent_move(game_id, headers, board, previous_move_count):
                 decoded_line = json.loads(line.decode('utf-8'))
                 if 'moves' in decoded_line:
                     moves = decoded_line['moves'].split()
+                    st.session_state.movesli = moves
                     
 #                    print("MOVES, LEN", moves, len(moves))
                     opponent_move = chess.Move.from_uci(moves[-1])
@@ -166,37 +167,7 @@ def get_ai_move(board, depth=20):
     board = st.session_state.boardli
     game_id  = st.session_state.gameid       
     move, move_count = listen_for_opponent_move(game_id, get_headers(), board, move_count)
-    
-    cast = isMoveCastling(board, move)
-    if cast:
-        bd = st.session_state.setboardli 
-        move_uci = move.uci()
-        print("CASTLING", move_uci)    
-#        fr = chess.parse_square(move_uci[0] + move_uci[1])
-        to = chess.parse_square(move_uci[2] + move_uci[3])
-
-        if st.session_state.colorli == chess.WHITE:
-            if to == 6:
-                bd[to - 1] = bd[to + 1]
-                bd[to + 1] = (None, None)
-#                board.remove_piece_at(to + 1)
-            elif to == 2:
-                bd[to + 1] = bd[to - 2]
-                bd[to - 2] = (None, None)
-#                board.remove_piece_at(to - 2)
-        elif st.session_state.colorli == chess.BLACK:
-            if to == 62:
-                bd[to - 1] = bd[to + 1]
-                bd[to + 1] = (None, None)
-#                board.remove_piece_at(to + 1)
-            elif to == 58:
-                bd[to + 1] = bd[to - 2]
-                bd[to - 2] = (None, None)
-#                board.remove_piece_at(to - 2)
-
-        board.push(move)
-        updateBoard(board)   
-        
+            
     return move
 
 def render_svg(svg_string):
@@ -213,11 +184,12 @@ def saveBoard(board):
 
 def updateBoard(board, save = True):
     bd = st.session_state.setboardli
-#    board.clear()
     for key in bd.keys():
         (pc, cl) = bd[key] 
         if (pc, cl) != (None, None):
             board.set_piece_at(key, chess.Piece(pc, cl))
+        else:
+            board.remove_piece_at(key) 
     if save:        
         saveBoard(board)
 
@@ -285,9 +257,15 @@ def coors2square(x, y):
     return sq
 
 def isMoveCastling(board, move):
+#    print("IS CASTLING?", move)
     if move == None:
         return False
-    if (board.piece_at(move.from_square).piece_type == chess.KING and
+#    print("FROM SQUARE", move.from_square)
+#    print("PIECE FROM SQUARE", board.piece_at(move.to_square))
+    pc = board.piece_at(move.from_square)
+    if pc == None:
+        pc = board.piece_at(move.to_square)
+    if (pc.piece_type == chess.KING and
         move.uci() in ["e1g1", "e1c1", "e8g8", "e8c8"]): 
 #        print("CASTLING")
         return True
@@ -304,22 +282,54 @@ def isMovePromotion(board, move):
     
     return False        
  
-def makeUciMove(board, uci_move, prom = False):
+def makeUciMove(board, move, prom = False):
     bd = st.session_state.setboardli
 
+    uci_move = move.uci()
 #    print("UCI MOVE", uci_move)
-    
+
     fr = chess.parse_square(uci_move[0] + uci_move[1])
     to = chess.parse_square(uci_move[2] + uci_move[3])
     
 #    print("fr= ", fr, "to= ", to)
-
+    
     if prom == False:
         bd[to] = bd[fr]
-        
     bd[fr] = (None, None)
+
+    cast = isMoveCastling(board, move)
+    if cast:
+        bd = st.session_state.setboardli 
+#        print("CASTLING", uci_move)    
+        (pc, cl) = bd[move.to_square]
+        if st.session_state.colorli == chess.BLACK:
+            if to == 6:
+                bd[to - 1] = bd[to + 1]
+                bd[to + 1] = (None, None)
+            elif to == 2:
+                bd[to + 1] = bd[to - 2]
+                bd[to - 2] = (None, None)
+        elif st.session_state.colorli == chess.WHITE:
+            if to == 62:
+                bd[to - 1] = bd[to + 1]
+                bd[to + 1] = (None, None)
+            elif to == 58:
+                bd[to + 1] = bd[to - 2]
+                bd[to - 2] = (None, None)
+    
     updateBoard(board)
-       
+
+def setBoardFromMoves(board):
+    bd = st.session_state.setboardli
+#    board.clear()
+    for move in st.session_state.movesli:
+        uci_move = chess.Move.from_uci(move)
+        (pc, cl) = bd[uci_move.to_square]
+        board.set_piece_at(uci_move.to_square, chess.Piece(pc, cl))
+        board.remove_piece_at(uci_move.from_square)
+
+        
+    
 def makeMove(board, x1, y1, x2, y2):
     fr = coors2square(x1, y1)
     to = coors2square(x2, y2)
@@ -398,6 +408,7 @@ def add_point():
     ai_move_uci =  get_ai_move(board)
 #    ai_move_uci = showStatus(get_ai_move, board, _("AI thinking ..."), None)
 #    showStatus(None, None, _("AI: " + str(ai_move_uci)))
+#    if (ai_move_uci in board.legal_moves):
     if (ai_move_uci in board.legal_moves) or isMoveCastling(board, ai_move_uci):
         ai_move = ai_move_uci
 #        ai_move = chess.Move.from_uci(ai_move_uci)
@@ -410,9 +421,10 @@ def add_point():
             bd = st.session_state.boardli
             pfr, cfr = bd[ai_move.from_square]
             bd[ai_move.to_square] = (pr, cfr)
-
+        
         board.push(ai_move)
-        makeUciMove(board, ai_move_uci.uci(), prom)
+#        print("PUSH", ai_move)
+        makeUciMove(board, ai_move, prom)
         addHistory(ai_move)
 
 #        print("AI MOVE ", ai_move_uci)
@@ -445,16 +457,18 @@ def selectBlackWhite(board):
                 st.session_state.historyli = []
                 st.session_state.difficulty = diff
                 st.session_state.gameid = challenge_ai()
+                st.session_state.movesli = []
         #        print(bd)
 
                 if sel[bw] == chess.BLACK:
                     
-                    ai_move_uci =  get_ai_move(board)
+                    ai_move =  get_ai_move(board)
+#                    ai_move = chess.Move.from_uci(ai_move_uci)
 #                    ai_move_uci = showStatus(get_ai_move, board, _("AI thinking ..."))
 #                    print("AI MOVE UCI", ai_move_uci)
 #                    showStatus(None, None, _("AI: " + str(ai_move_uci)))
-                    if ai_move_uci in board.legal_moves:
-                        ai_move = ai_move_uci
+                    if ai_move in board.legal_moves:
+                        
 #                        ai_move = chess.Move.from_uci(ai_move_uci)
 #                        ai_move = board.parse_san(ai_move_uci)
                         
@@ -468,7 +482,7 @@ def selectBlackWhite(board):
                             bd[ai_move.to_square] = (pr, cfr)
 
                         board.push(ai_move)
-                        makeUciMove(board, ai_move_uci.uci(), prom)
+                        makeUciMove(board, ai_move, prom)
                         addHistory(ai_move)
  
 #                        print("FIRST AI MOVE ", ai_move_uci)
