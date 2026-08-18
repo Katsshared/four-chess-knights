@@ -23,9 +23,12 @@ _ = localizator.gettext
 
 st.title(_("Chess editor"))
 
-board_edit = chess.Board()
-if "board_edit" not in st.session_state:
-    st.session_state.board_edit = board_edit
+def get_boarded():
+    board_ed = chess.Board()
+    return board_ed
+
+if "boarded" not in st.session_state:
+    st.session_state.boarded = get_boarded()
 
 def render_svg(svg_string):
     """Renders the given svg string."""
@@ -40,7 +43,7 @@ def saveBoard(board):
 
 
 def updateBoard(board, save = True):
-    bd = st.session_state["setboard_edit"]
+    bd = st.session_state["setboarded"]
     board.clear()
     for key in bd.keys():
         (pc, cl) = bd[key] 
@@ -110,7 +113,7 @@ def coors2square(x, y):
 def makeMove(board, x1, y1, x2, y2):
     fr = coors2square(x1, y1)
     to = coors2square(x2, y2)
-    bd = st.session_state["setboard_edit"]
+    bd = st.session_state.setboarded
 #    (pfr, cfr) = bd[fr]
 #    (pto, cto) = bd[to]
 #    board.set_piece_at(to, chess.Piece(pto, cto))
@@ -127,7 +130,7 @@ def makeMove(board, x1, y1, x2, y2):
     updateBoard(board)
     
 def add_point():
-    board = st.session_state.board_edit
+    board = st.session_state.boarded
     rv = st.session_state["pil"]
     print("pil ", rv)
     off = 15
@@ -149,9 +152,9 @@ def set_board(board):
     
 def stfish(board):    
 
-    if "setboard_edit" not in st.session_state:
+    if "setboarded" not in st.session_state:
         bd = set_board(board)
-        st.session_state["setboard_edit"] = bd
+        st.session_state.setboarded = bd
         
     try:                
         streamlit_image_coordinates(
@@ -173,4 +176,4 @@ def stfish(board):
         print(f"Failed to coor:\n {e}")
         
 if __name__ == '__main__':
-    stfish(st.session_state.board_edit)
+    stfish(st.session_state.boarded)
