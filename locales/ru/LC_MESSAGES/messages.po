@@ -22,17 +22,9 @@ msgstr ""
 msgid "Four Chess Knights"
 msgstr "Четыре шахматных рыцаря"
 
-#: OrFourKnights.py:61 OrHelloWorld.py:19
-msgid "Hello world"
-msgstr "Привет мир"
-
 #: OrFourKnights.py:62 OrHelloWorld.py:32 OrChessPuzzles.py:15
 msgid "Chess puzzles"
 msgstr "Шахматные задачи"
-
-#: OrFourKnights.py:65
-msgid "This is a translatable string"
-msgstr "Эта переводимая строка символов"
 
 #: OrSelectLanguage.py:51 OrHelloWorld.py:21
 msgid "About us"
@@ -57,40 +49,6 @@ msgstr ""
 #: OrSelectLanguage.py:61 OrHelloWorld.py:35
 msgid "Our students' achievements"
 msgstr "Достижения наших студентов"
-
-#: OrSelectLanguage.py:62 OrHelloWorld.py:36
-msgid ""
-"Yakov (11 years old), Milena (8 years old), Lyuba (8 years old), Gosha (11 "
-"years old)"
-msgstr "Яков (11 лет), Милена (8 лет), Люба (8 лет), Гоша (11 лет)"
-
-#: OrHelloWorld.py:21
-msgid "Mission"
-msgstr "Миссия"
-
-#: OrHelloWorld.py:21 OrHelloWorld.py:29
-msgid "Careers"
-msgstr "Карьера"
-
-#: OrHelloWorld.py:21
-msgid "Tasks"
-msgstr "Задачи"
-
-#: OrHelloWorld.py:21
-msgid "Achievements"
-msgstr "Достижения"
-
-#: OrHelloWorld.py:23
-msgid "Our Mission"
-msgstr "Наша миссия"
-
-#: OrHelloWorld.py:26
-msgid "About Us"
-msgstr "О нас"
-
-#: OrHelloWorld.py:30
-msgid "We are hiring! Apply today!"
-msgstr "Мы набираем сотрудников! Подайте заявку сегодня!"
 
 #: OrHelloWorld.py:33
 msgid "Mate in one move       Mate in two moves"
@@ -242,3 +200,10 @@ msgstr "10 принципов Вильгельма Стейница"
 
 msgid "Chess editor"
 msgstr "Шахматный редактор"
+
+msgid "Difficulty"
+msgstr "Сложность"
+
+msgid "Watch"
+msgstr "Смотреть"
+

@@ -55,44 +55,6 @@ msgstr ""
 msgid "Our students' achievements"
 msgstr ""
 
-#: OrSelectLanguage.py:62 OrHelloWorld.py:36
-msgid ""
-"Yakov (11 years old), Milena (8 years old), Lyuba (8 years old), Gosha (11 "
-"years old)"
-msgstr ""
-
-#: OrHelloWorld.py:21
-msgid "Mission"
-msgstr ""
-
-#: OrHelloWorld.py:21 OrHelloWorld.py:29
-msgid "Careers"
-msgstr ""
-
-#: OrHelloWorld.py:21
-msgid "Tasks"
-msgstr ""
-
-#: OrHelloWorld.py:21
-msgid "Achievements"
-msgstr ""
-
-#: OrHelloWorld.py:23
-msgid "Our Mission"
-msgstr ""
-
-#: OrHelloWorld.py:26
-msgid "About Us"
-msgstr ""
-
-#: OrHelloWorld.py:30
-msgid "We are hiring! Apply today!"
-msgstr ""
-
-#: OrHelloWorld.py:33
-msgid "Mate in one move       Mate in two moves"
-msgstr ""
-
 #: OrChessPuzzles.py:112
 msgid "Show solution"
 msgstr ""
@@ -217,4 +179,10 @@ msgid "10 principles of Wilhelm Steinitz"
 msgstr ""
 
 msgid "Chess editor"
+msgstr ""
+
+msgid "Difficulty"
+msgstr ""
+
+msgid "Watch"
 msgstr ""
