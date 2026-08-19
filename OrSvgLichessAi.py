@@ -134,9 +134,9 @@ def showHistory():
 
 def addHistory(move, ai=True):
     if ai:
-        st.session_state.historyli.append(f"AI: {move.uci()}")
+        st.session_state.historyli.append(f"AI: {move.uci()} ")
     else:
-        st.session_state.historyli.append(f"Human: {move.uci()}")
+        st.session_state.historyli.append(f"Human: {move.uci()} ")
                
 def showStatus(func, board, msg, move = ""):
     with st.status("", expanded=False) as status:
@@ -510,13 +510,18 @@ def main():
                 game_id = st.session_state.gameid
                 st.page_link(f"https://lichess.org/{game_id}", label="LICHESS", icon="🌎")
 
-                with open(PLAYLIFILENAME, "rb") as file:
+                fname = "GameVsLichess.txt"
+                file = open(fname, 'w')
+                file.writelines(st.session_state.historyli)
+                file.close()
+                
+                with open(fname, "r") as file:
                     st.download_button(
                         label=_("Download"),
                         data=file,
-                        file_name=PLAYLIFILENAME,
-                        mime="image/png"
-                    )
+                        file_name=fname,
+                        mime="text/txt"
+                    )                                   
     
         except Exception as e:
             st.error(f"Failed:\n {e}")

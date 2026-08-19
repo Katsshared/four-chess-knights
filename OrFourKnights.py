@@ -62,6 +62,7 @@ pg = st.navigation([
 #    st.Page("OrSvgChessStockfish.py", title=_("Play") + " " + _("chess"), icon="♟️"),
     st.Page("OrChessPuzzles.py", title=_("Chess puzzles"), icon="♟️"),
     st.Page("OrSvgEditChessBoard.py", title=_("Chess editor"), icon="♟️"),
+    st.Page("OrPlayPgnGame.py", title=_("Watch"), icon="🎥"),
     st.Page("OrEmailContact.py", title=_("Contact"), icon="📫"),
 ])
 

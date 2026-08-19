@@ -375,13 +375,6 @@ def minimax(
                 return best_move
         return best_move
     
-    
-    
-
-
-
-
-
 
 if "sellang" not in st.session_state:
     st.session_state.sellang ="en"
@@ -442,9 +435,9 @@ def showHistory():
 
 def addHistory(move, ai=True):
     if ai:
-        st.session_state.historyai.append(f"AI: {move.uci()}")
+        st.session_state.historyai.append(f"AI: {move.uci()} ")
     else:
-        st.session_state.historyai.append(f"Human: {move.uci()}")
+        st.session_state.historyai.append(f"Human: {move.uci()} ")
                
 def showStatus(func, board, msg, move = ""):
     with st.status("", expanded=False) as status:
@@ -747,13 +740,18 @@ def main():
                 click_and_drag=True,
                 on_click=add_point
                 )
-
-            with open(PLAYAIFILENAME, "rb") as file:
+            
+            fname = "GameVsAI.txt"
+            file = open(fname, 'w')
+            file.writelines(st.session_state.historyai)
+            file.close()
+            
+            with open(fname, "r") as file:
                 st.download_button(
                     label=_("Download"),
                     data=file,
-                    file_name=PLAYAIFILENAME,
-                    mime="image/png"
+                    file_name=fname,
+                    mime="text/txt"
                 )                                   
         except Exception as e:
             st.error(f"Failed:\n {e}")
