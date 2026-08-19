@@ -143,9 +143,9 @@ def dummyMove(board):
     board.pop()
 
 def saveBoard(board):
-    img = pyvips.Image.new_from_buffer(chess.svg.board(board).encode(), "")
+    img = pyvips.Image.new_from_buffer(chess.svg.board(board).encode(), options="")
     img.pngsave(GAMEPGNFILENAME)
-
+ 
     
 def render_svg(svg_string):
     """Renders the given svg string."""
@@ -188,22 +188,14 @@ def stepGame(board, step=1):
             return
             
     if step < 0:
-        if act > 0:
+        if act >= 0:
             popMove(board)            
-        elif act <= 0:
-            if idx == size - 1 and size % 2 != 0:
+        elif act < 0:
+            if idx > 0:
                 st.session_state.indexga = idx - 1          
                 popMove(board)
-            else:
-                if idx > 0:
-                    st.session_state.indexga = idx - 1          
-                    popMove(board)
-                if idx - 1 > 0:
-                    st.session_state.indexga = idx - 2          
-                    popMove(board)
             if st.session_state.indexga < 0:
                 st.session_state.indexga = 0
-#        saveBoard(board)
     elif step > 0:
         if act <= 0:
             pushMove(board)            
@@ -211,16 +203,12 @@ def stepGame(board, step=1):
             if idx < size - 1:       
                 st.session_state.indexga = idx + 1
                 pushMove(board)            
-            if idx + 1 < size - 1:
-                st.session_state.indexga = idx + 2
-                pushMove(board)            
             if st.session_state.indexga > size - 1:
                 st.session_state.indexga = size - 1    
-#        saveBoard(board)
 
 def initGame(board):
-    bd = set_board(board)
-#    st.session_state.setboardga = bd
+    set_board(board)
+
     st.session_state.indexga = 0
     st.session_state.actionga = 0
     st.session_state.historyga = []
@@ -240,6 +228,7 @@ def endGame(board):
     
     saveBoard(board)
     
+    
 #    for move in moves:
 #        print("PUSH", move)
 #        board.push(move)
@@ -250,6 +239,7 @@ def endGame(board):
        
     
 def add_point():
+    board = st.session_state.boardga
     return
 
 def set_board(board, side = chess.WHITE):    
@@ -267,8 +257,7 @@ def selectGame(game_sel):
             game = chess.pgn.read_game(file)
             moves = [move for move in game.mainline_moves()]
         
-        st.header(game.headers["White"]+" vs "+game.headers["Black"])
-
+        st.session_state.headerga = game.headers["White"]+" vs "+game.headers["Black"]
         st.session_state.gamega = game_sel
         st.session_state.movesga = moves
         st.session_state.indexga = 0
@@ -285,11 +274,12 @@ def main(board):
 
     game_sel = st.selectbox(label=" ", options=games.keys(), key=1)    
     selectGame(game_sel)
-                  
+                
+    st.header(st.session_state.headerga)
+              
     if "setboardga" not in st.session_state:
         bd = set_board(board)    
         st.session_state.setboardga = bd
-
 
     col1, col2 = st.columns([0.7, 0.3])
     
