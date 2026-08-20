@@ -194,8 +194,8 @@ def stepGame(board, step=1):
             if idx > 0:
                 st.session_state.indexga = idx - 1          
                 popMove(board)
-            if st.session_state.indexga < 0:
-                st.session_state.indexga = 0
+        if st.session_state.indexga < 0:
+            st.session_state.indexga = 0
     elif step > 0:
         if act <= 0:
             pushMove(board)            
@@ -203,12 +203,12 @@ def stepGame(board, step=1):
             if idx < size - 1:       
                 st.session_state.indexga = idx + 1
                 pushMove(board)            
-            if st.session_state.indexga > size - 1:
-                st.session_state.indexga = size - 1    
+        if st.session_state.indexga > size - 1:
+            st.session_state.indexga = size - 1    
 
 def initGame(board):
     set_board(board)
-
+    
     st.session_state.indexga = 0
     st.session_state.actionga = 0
     st.session_state.historyga = []
@@ -240,6 +240,8 @@ def endGame(board):
     
 def add_point():
     board = st.session_state.boardga
+    fen = board.fen()
+    print(fen)
     return
 
 def set_board(board, side = chess.WHITE):    

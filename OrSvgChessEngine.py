@@ -387,8 +387,8 @@ _ = localizator.gettext
 def get_titleai():
     wb = ""
     depth =""
-    if "depth" in st.session_state:
-        depth = " " + _("Depth") + " " + str(st.session_state.depth)
+    if "depthai" in st.session_state:
+        depth = " " + _("Depth") + " " + str(st.session_state.depthai)
     if "colorai" in st.session_state:
         wb = _("White") if st.session_state.colorai == chess.WHITE else _("Black")
     
@@ -402,7 +402,6 @@ def get_boardai():
     board_ai = chess.Board()
     return board_ai
 
-board_ai = chess.Board()
 if "boardai" not in st.session_state:
     st.session_state.boardai = get_boardai()
 
@@ -451,9 +450,9 @@ def showStatus(func, board, msg, move = ""):
         return rv
 
     
-def get_ai_move(board, depth=20):
+def get_ai_move(board):
 #    board = st.session_state.boardai
-    bm = next_move(st.session_state.depth, board, False)
+    bm = next_move(st.session_state.depthai, board, False)
 
 #    print("GET AI MOVE", bm)
     
@@ -645,9 +644,10 @@ def add_point():
     
 #    print("POS=", stockfi.get_fen_position())
 #    print("BPOS=", board.fen())
-
-    ai_move_uci = showStatus(get_ai_move, board, _("AI thinking ..."), None)
-    showStatus(None, None, _("AI: " + str(ai_move_uci)))
+    
+    ai_move_uci = get_ai_move(board)
+#    ai_move_uci = showStatus(get_ai_move, board, _("AI thinking ..."), None)
+#    showStatus(None, None, _("AI: " + str(ai_move_uci)))
     if ai_move_uci in board.legal_moves:
         ai_move = ai_move_uci
 #        ai_move = chess.Move.from_uci(ai_move_uci)
@@ -693,14 +693,15 @@ def selectBlackWhite(board):
                 st.session_state.setboardai = bd
                 st.session_state.colorai = sel[bw]
                 st.session_state.historyai = []
-                st.session_state.depth = depth
+                st.session_state.depthai = depth
         #        print(bd)
         
                 if sel[bw] == chess.BLACK:
                     
-                    ai_move_uci = showStatus(get_ai_move, board, _("AI thinking ..."))
+                    ai_move_uci = get_ai_move(board)
+#                    ai_move_uci = showStatus(get_ai_move, board, _("AI thinking ..."))
 #                    print("AI MOVE UCI", ai_move_uci)
-                    showStatus(None, None, _("AI: " + str(ai_move_uci)))
+#                    showStatus(None, None, _("AI: " + str(ai_move_uci)))
                     if ai_move_uci in board.legal_moves:
                         ai_move = ai_move_uci
 #                        ai_move = chess.Move.from_uci(ai_move_uci)

@@ -3,77 +3,25 @@ import pyvips
 
 import streamlit as st
 from streamlit_image_coordinates import streamlit_image_coordinates
+from PIL import Image, ImageDraw
+
 
 import chess
 import chess.svg
 
+import stockfish as stf
+
 import gettext
+import sys
+#st.status("PLATFORM "+ sys.platform)
 
-PLAYLIFILENAME = "playli.png"
+print("PLATFORM "+ sys.platform)
+if sys.platform == "win32":
+    STOCKFISHAPP = 'C:/Data/SW/Stockfish/stockfish-windows-x86-64-avx2.exe'
+elif sys.platform == "linux":
+    STOCKFISHAPP = './stockfish-ubuntu-x86-64-avx2'
 
-#
-# lichess_cli_maia1.py
-#
-import requests
-import json
-import time
-import OrKatTkn
-
-def  get_token():
-    return OrKatTkn.key2 + OrKatTkn.key1
-
-def  get_headers():
-    token = get_token()
-    return {'Authorization': f'Bearer {token}'}
-
-def listen_for_opponent_move(game_id, headers, board, previous_move_count):
-    stream_url = f'https://lichess.org/api/board/game/stream/{game_id}'
-    with requests.get(stream_url, headers=headers, stream=True) as response:
-        for line in response.iter_lines():
-            if line:
-                decoded_line = json.loads(line.decode('utf-8'))
-                if 'moves' in decoded_line:
-                    moves = decoded_line['moves'].split()
-                    st.session_state.movesli = moves
-                    
-#                    print("MOVES, LEN", moves, len(moves))
-                    opponent_move = chess.Move.from_uci(moves[-1])
-                    return opponent_move, len(moves)
-
-#                    if len(moves) > previous_move_count:
-#                        last_move = moves[-1]
-#                        opponent_move = chess.Move.from_uci(last_move)
-#                        return board.san(opponent_move), len(moves)
-            time.sleep(1)
-    return None, previous_move_count
-
-def resign_game_li(game_id, headers):
-    resign_url = f'https://lichess.org/api/board/game/{game_id}/resign'
-    try:
-        response = requests.post(resign_url, headers=headers)
-        return response.ok
-    except Exception as e:
-        print("Failed to resign:", e)
-        return False
-
-def challenge_ai():
-    difficulty = st.session_state.difficulty 
-    user_color = 'white' if st.session_state.colorli == chess.WHITE else 'black'
-    payload = {'level': difficulty, 'color': user_color}
-
-    try:
-        response = requests.post('https://lichess.org/api/challenge/ai', headers=get_headers(), data=payload)
-        response.raise_for_status()
-    except requests.RequestException as e:
-        print("Failed to start game:", e)
-        return None
-
-    game_id = response.json()['id']
-    
-    return game_id
-
-
-
+PLAYSTFILENAME = "playst.png"
 
 if "sellang" not in st.session_state:
     st.session_state.sellang ="en"
@@ -82,28 +30,29 @@ localizator = gettext.translation('messages', localedir='locales', languages=[st
 localizator.install() 
 _ = localizator.gettext 
 
-def get_titleli():
+
+def get_titlest():
     wb = ""
-    diff =""
-    if "difficulty" in st.session_state:
-        diff = " " + _("Difficulty") + " " + str(st.session_state.difficulty)
-    else:
-        diff = "(LICHESS)"
-    if "colorli" in st.session_state:
-        wb = _("White") if st.session_state.colorli == chess.WHITE else _("Black")
+    depth =""
+    if "depthst" in st.session_state:
+        depth = " " + _("Depth") + " " + str(st.session_state.depthst)
+    if "colorst" in st.session_state:
+        wb = _("White") if st.session_state.colorst == chess.WHITE else _("Black")
     
-    title = _("Play") + " " + _("chess") + " " + wb + diff
+    title = _("Play") + " " + _("chess") + " " + wb + depth
 
     return title
 
-st.title(get_titleli())
+st.title(get_titlest())
 
-def get_boardli():
-    board_li = chess.Board()
-    return board_li
+def get_boardst():
+    board_st = chess.Board()
+    return board_st
 
-if "boardli" not in st.session_state:
-    st.session_state.boardli = get_boardli()
+if "boardst" not in st.session_state:
+    st.session_state.boardst = get_boardst()
+
+stockfi = stf.Stockfish(path=STOCKFISHAPP)
 
 #@st.dialog("Choose promotion", dismissible=True)
 def choosePromotion():
@@ -121,7 +70,7 @@ def choosePromotion():
 def showHistory():
     ls = []
     j = 1
-    for i, move in enumerate(st.session_state.historyli):
+    for i, move in enumerate(st.session_state.historyst):
         text = ""
         if i % 2 == 0:
             text = f"{j}. {move}"
@@ -130,13 +79,13 @@ def showHistory():
             j = j + 1            
         ls.append(text)
     st.markdown(ls)
-#    print(st.session_state.historyli)
+#    print(st.session_state.historyst)
 
 def addHistory(move, ai=True):
     if ai:
-        st.session_state.historyli.append(f"AI: {move.uci()} ")
+        st.session_state.historyst.append(f"AI: {move.uci()} ")
     else:
-        st.session_state.historyli.append(f"Human: {move.uci()} ")
+        st.session_state.historyst.append(f"Human: {move.uci()} ")
                
 def showStatus(func, board, msg, move = ""):
     with st.status("", expanded=False) as status:
@@ -149,26 +98,19 @@ def showStatus(func, board, msg, move = ""):
             status.update(label=msg + " " + move, state="complete", expanded=False)
         return rv
 
-    
-def get_game_id():
-    game_id = challenge_ai()
-    if not game_id:
-        print("No game started.")
-        return None
+def setFenStockfish(board):
+    stockfi.set_fen_position(board.fen())
+#    print("FEN=", stockfi.get_fen_position())
 
-    print(f"Game ID: {game_id}")
-    print(f"Watch or play: https://lichess.org/{game_id}")
-    print("Type your move in standard notation (e.g., e4, Nf3), 'show' to view the board, 'clock' for remaining time, 'audio' to toggle speech, or 'resign' to resign the game.")
-
-    return game_id
     
 def get_ai_move(board):
-    move_count = 0
-    board = st.session_state.boardli
-    game_id  = st.session_state.gameid       
-    move, move_count = listen_for_opponent_move(game_id, get_headers(), board, move_count)
-            
-    return move
+    setFenStockfish(board)
+    stockfi.set_depth(st.session_state.depthst)
+    print("Depth", st.session_state.depthst)
+    bm = stockfi.get_best_move()
+#    print("BEST MOVE", bm)
+    
+    return bm
 
 def render_svg(svg_string):
     """Renders the given svg string."""
@@ -179,17 +121,16 @@ def render_svg(svg_string):
 
 def saveBoard(board):
     img = pyvips.Image.new_from_buffer(chess.svg.board(board).encode(), "")
-    img.pngsave(PLAYLIFILENAME)
+    img.pngsave(PLAYSTFILENAME)
 
 
 def updateBoard(board, save = True):
-    bd = st.session_state.setboardli
+    bd = st.session_state.setboardst
+#    board.clear()
     for key in bd.keys():
         (pc, cl) = bd[key] 
         if (pc, cl) != (None, None):
             board.set_piece_at(key, chess.Piece(pc, cl))
-        else:
-            board.remove_piece_at(key) 
     if save:        
         saveBoard(board)
 
@@ -257,15 +198,7 @@ def coors2square(x, y):
     return sq
 
 def isMoveCastling(board, move):
-#    print("IS CASTLING?", move)
-    if move == None:
-        return False
-#    print("FROM SQUARE", move.from_square)
-#    print("PIECE FROM SQUARE", board.piece_at(move.to_square))
-    pc = board.piece_at(move.from_square)
-    if pc == None:
-        pc = board.piece_at(move.to_square)
-    if (pc.piece_type == chess.KING and
+    if (board.piece_at(move.from_square).piece_type == chess.KING and
         move.uci() in ["e1g1", "e1c1", "e8g8", "e8c8"]): 
 #        print("CASTLING")
         return True
@@ -282,77 +215,45 @@ def isMovePromotion(board, move):
     
     return False        
  
-def makeUciMove(board, move, prom = False):
-    bd = st.session_state.setboardli
+def makeUciMove(board, uci_move, prom = False):
+    bd = st.session_state.setboardst
 
-    uci_move = move.uci()
 #    print("UCI MOVE", uci_move)
-
+    
     fr = chess.parse_square(uci_move[0] + uci_move[1])
     to = chess.parse_square(uci_move[2] + uci_move[3])
     
 #    print("fr= ", fr, "to= ", to)
-    
+
     if prom == False:
         bd[to] = bd[fr]
-    bd[fr] = (None, None)
-
-    cast = isMoveCastling(board, move)
-    if cast:
-        bd = st.session_state.setboardli 
-#        print("CASTLING", uci_move)    
-        (pc, cl) = bd[move.to_square]
-        if st.session_state.colorli == chess.BLACK:
-            if to == 6:
-                bd[to - 1] = bd[to + 1]
-                bd[to + 1] = (None, None)
-            elif to == 2:
-                bd[to + 1] = bd[to - 2]
-                bd[to - 2] = (None, None)
-        elif st.session_state.colorli == chess.WHITE:
-            if to == 62:
-                bd[to - 1] = bd[to + 1]
-                bd[to + 1] = (None, None)
-            elif to == 58:
-                bd[to + 1] = bd[to - 2]
-                bd[to - 2] = (None, None)
-    
-    updateBoard(board)
-
-def setBoardFromMoves(board):
-    bd = st.session_state.setboardli
-#    board.clear()
-    for move in st.session_state.movesli:
-        uci_move = chess.Move.from_uci(move)
-        (pc, cl) = bd[uci_move.to_square]
-        board.set_piece_at(uci_move.to_square, chess.Piece(pc, cl))
-        board.remove_piece_at(uci_move.from_square)
-
         
-    
+    bd[fr] = (None, None)
+    updateBoard(board)
+       
 def makeMove(board, x1, y1, x2, y2):
     fr = coors2square(x1, y1)
     to = coors2square(x2, y2)
-    bd = st.session_state.setboardli
+    bd = st.session_state.setboardst
     
     if fr == to:
         return None
     (pfr, cfr) = bd[fr]
     (pto, cto) = bd[to]
-    if cfr != st.session_state.colorli:
+    if cfr != st.session_state.colorst:
         return None
      
     move = chess.Move(fr, to)  
     cast = isMoveCastling(board, move)
     if cast:
-        if st.session_state.colorli == chess.WHITE:
+        if st.session_state.colorst == chess.WHITE:
             if to == 6:
                 bd[to - 1] = bd[to + 1]
                 bd[to + 1] = (None, None)
             elif to == 2:
                 bd[to + 1] = bd[to - 2]
                 bd[to - 2] = (None, None)
-        elif st.session_state.colorli == chess.BLACK:
+        elif st.session_state.colorst == chess.BLACK:
             if to == 62:
                 bd[to - 1] = bd[to + 1]
                 bd[to + 1] = (None, None)
@@ -378,23 +279,15 @@ def makeMove(board, x1, y1, x2, y2):
         
     bd[fr] = (None, None)
     updateBoard(board)
-    
-    uci_move = move.uci()
-    game_id = st.session_state.gameid
-    move_url = f'https://lichess.org/api/board/game/{game_id}/move/{uci_move}'
-    move_response = requests.post(move_url, headers=get_headers())
-    if move_response.status_code != 200:
-        print("Failed to send move:", move_response.text)
-
     return 1
     
 def add_point():
-    board = st.session_state.boardli    
+    board = st.session_state.boardst    
     if board.is_game_over():
         return
     
     rv = st.session_state["pil"]
-#    print("pil ", rv)
+    print("pil ", rv)
     off = 15
     for key in ["x1", "x2" , "y1", "y2"]:
         if rv[key] < off or rv[key] > rv["width"] - off or rv[key] > rv["height"] - off:
@@ -405,34 +298,31 @@ def add_point():
     
 #    print("POS=", stockfi.get_fen_position())
 #    print("BPOS=", board.fen())
-    ai_move_uci =  get_ai_move(board)
+
+#    setFenStockfish(board)
+    ai_move_uci = get_ai_move(board)
 #    ai_move_uci = showStatus(get_ai_move, board, _("AI thinking ..."), None)
 #    showStatus(None, None, _("AI: " + str(ai_move_uci)))
-#    if (ai_move_uci in board.legal_moves):
-    if (ai_move_uci in board.legal_moves) or isMoveCastling(board, ai_move_uci):
-        ai_move = ai_move_uci
-#        ai_move = chess.Move.from_uci(ai_move_uci)
+    if stockfi.is_move_legal(ai_move_uci):
+        ai_move = chess.Move.from_uci(ai_move_uci)
         
         pr = chess.QUEEN
         prom = isMovePromotion(board, ai_move)
         if prom:
             pr = choosePromotion()
             ai_move = chess.Move(ai_move.from_square, ai_move.to_square, promotion=pr)
-            bd = st.session_state.boardli
+            bd = st.session_state.setboardst
             pfr, cfr = bd[ai_move.from_square]
             bd[ai_move.to_square] = (pr, cfr)
-        
+
         board.push(ai_move)
-#        print("PUSH", ai_move)
-        makeUciMove(board, ai_move, prom)
+        makeUciMove(board, ai_move_uci, prom)
         addHistory(ai_move)
 
 #        print("AI MOVE ", ai_move_uci)
-        
-    if board.is_game_over():
-#        if board.is_game_over() and board.is_checkmate() and board.is_check():
-        showStatus(None, None, _("GAME OVER!"))
 
+    if board.is_game_over():
+        showStatus(None, None, _("GAME OVER!"))
 
     
 def set_board(board, side = chess.WHITE):    
@@ -443,46 +333,41 @@ def set_board(board, side = chess.WHITE):
     return bd   
     
 def selectBlackWhite(board):
-    if "colorli" not in st.session_state:
+    if "colorst" not in st.session_state:
         sel = {"NONE":None, _("White"):chess.WHITE, _("Black"):chess.BLACK}
-        bw = st.radio(_("Choose White or Black"), sel.keys(), key="li", horizontal=True)
-        diff = st.slider(_("Difficulty"), 1, 8, 1)
+        bw = st.radio(_("Choose White or Black"), sel.keys(), key = "st", horizontal=True)
+        depth = st.slider(_("Depth"), 1, 20, 1)
 
         if sel[bw] in [chess.WHITE, chess.BLACK]:    
             
-            if "setboardli" not in st.session_state:
+            if "setboardst" not in st.session_state:
                 bd = set_board(board, bw)    
-                st.session_state.setboardli = bd
-                st.session_state.colorli = sel[bw]
-                st.session_state.historyli = []
-                st.session_state.difficulty = diff
-                st.session_state.gameid = challenge_ai()
-                st.session_state.movesli = []
+                st.session_state.setboardst = bd
+                st.session_state.colorst = sel[bw]
+                st.session_state.historyst = []
+                st.session_state.depthst = depth
         #        print(bd)
-
+        
                 if sel[bw] == chess.BLACK:
-                    
-                    ai_move =  get_ai_move(board)
-#                    ai_move = chess.Move.from_uci(ai_move_uci)
+        #            setFenStockfish(board)
+                    ai_move_uci = get_ai_move(board)
+#                    showStatus(None, None, _("AI: " + str(ai_mo
 #                    ai_move_uci = showStatus(get_ai_move, board, _("AI thinking ..."))
-#                    print("AI MOVE UCI", ai_move_uci)
 #                    showStatus(None, None, _("AI: " + str(ai_move_uci)))
-                    if ai_move in board.legal_moves:
-                        
-#                        ai_move = chess.Move.from_uci(ai_move_uci)
-#                        ai_move = board.parse_san(ai_move_uci)
-                        
+                    if stockfi.is_move_legal(ai_move_uci):
+                        ai_move = chess.Move.from_uci(ai_move_uci)
+                       
                         pr = chess.QUEEN
                         prom = isMovePromotion(board, ai_move)
                         if prom:
                             pr = choosePromotion()
                             ai_move = chess.Move(ai_move.from_square, ai_move.to_square, promotion=pr)
-                            bd = st.session_state.boardli
+                            bd = st.session_state.setboardst
                             pfr, cfr = bd[ai_move.from_square]
                             bd[ai_move.to_square] = (pr, cfr)
 
                         board.push(ai_move)
-                        makeUciMove(board, ai_move, prom)
+                        makeUciMove(board, ai_move_uci, prom)
                         addHistory(ai_move)
  
 #                        print("FIRST AI MOVE ", ai_move_uci)
@@ -490,45 +375,44 @@ def selectBlackWhite(board):
                 main() 
                 st.rerun()                      
     else:
-        main()    
+        main()
     
        
 def main():    
-    
+#    human_color = st.session_state.colorst
+#    print(f"You are playing as {'White' if human_color == chess.WHITE else 'Black'}")
+
     col1, col2 = st.columns([0.7, 0.3])
     
     with col1:
     
         try:                
             streamlit_image_coordinates(
-                PLAYLIFILENAME,
+                PLAYSTFILENAME,
                 key="pil",
                 click_and_drag=True,
                 on_click=add_point
                 )
-            with st.container(horizontal=True, horizontal_alignment="left"):
-                game_id = st.session_state.gameid
-                st.page_link(f"https://lichess.org/{game_id}", label="LICHESS", icon="🌎")
 
-                fname = "GameVsLichess.txt"
-                file = open(fname, 'w')
-                file.writelines(st.session_state.historyli)
-                file.close()
-                
-                with open(fname, "r") as file:
-                    st.download_button(
-                        label=_("Download"),
-                        data=file,
-                        file_name=fname,
-                        mime="text/txt"
-                    )                                   
-    
+            fname = "GameVsStockfish.txt"
+            file = open(fname, 'w')
+            file.writelines(st.session_state.historyst)
+            file.close()
+            
+            with open(fname, "r") as file:
+                st.download_button(
+                    label=_("Download"),
+                    data=file,
+                    file_name=fname,
+                    mime="text/txt"
+                )                                   
         except Exception as e:
             st.error(f"Failed:\n {e}")
+#            print(f"Failed to coor:\n {e}")
             
         with col2:
             showHistory()
 
         
 if __name__ == '__main__':
-    selectBlackWhite(st.session_state.boardli)
+    selectBlackWhite(st.session_state.boardst)
