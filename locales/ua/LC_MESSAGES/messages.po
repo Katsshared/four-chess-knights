@@ -32,25 +32,9 @@ msgstr "Про нас"
 msgid "We are the Four Chess Knights club"
 msgstr "Ми — клуб Чотири шахові лицарі"
 
-#: OrSelectLanguage.py:59 OrHelloWorld.py:24
-msgid "Our mission is to foster children's interest in playing chess."
-msgstr "Наша місія — сприяти розвитку у дітей інтересу до гри в шахи."
-
-#: OrSelectLanguage.py:60 OrHelloWorld.py:27
-msgid ""
-"We are a children's chess club based at a center for social and integration "
-"cooperation."
-msgstr ""
-"Ми — дитячий шаховий клуб, що базується на базі центру соціальної та "
-"інтеграційної співпраці."
-
 #: OrSelectLanguage.py:61 OrHelloWorld.py:35
 msgid "Our students' achievements"
 msgstr "Досягнення наших учнів"
-
-#: OrHelloWorld.py:33
-msgid "Mate in one move       Mate in two moves"
-msgstr "Мат одним ходом       Мат двома ходами"
 
 #: OrChessPuzzles.py:30
 msgid "Show solution"

@@ -17,8 +17,31 @@ st.header(_("We are the Four Chess Knights club"))
 
 #st.image("images/Chessboard.png")
 
-st.write(_("Our mission is to foster children's interest in playing chess."))
-st.write(_("We are a children's chess club based at a center for social and integration cooperation."))
+en_tenpr = _('''
+Our mission is to foster children's interest in playing chess.
+We are a children's chess club based at a center for social and integration cooperation.
+'''
+)
+de_tenpr = _('''
+Unsere Mission ist es, das Interesse von Kindern am Schachspiel zu fördern.
+Wir sind ein Kinderschachclub, der in einem Zentrum für soziale und Integrationskooperation angesiedelt ist.
+'''
+)
+ru_tenpr = _('''
+Наша миссия — пробудить у детей интерес к игре в шахматы.
+Мы — детский шахматный клуб, расположенный в центре социального и интеграционного сотрудничества.
+'''
+)
+ua_tenpr = _('''
+Наша місія — сприяти розвитку у дітей інтересу до гри в шахи.
+Ми — дитячий шаховий клуб, що базується на базі центру соціальної та інтеграційної співпраці.
+'''
+)
+
+tenpr = {"en":en_tenpr, "de":de_tenpr, "ru":ru_tenpr, "ua":ua_tenpr, }
+
+st.write(tenpr[st.session_state.sellang])
+
 st.header(_("Our students' achievements"))
 st.write(" 🟢 " + _("Win") +  " 🟡 "   + _("Draw")+ " 🔴 " + _("Loss"))
 
