@@ -42,6 +42,24 @@ ua_tenpr = _('''
 )
 tenpr = {"en":en_tenpr, "de":de_tenpr, "ru":ru_tenpr, "ua":ua_tenpr, }
 
+en_champ = _('''
+World Chess Championship
+'''
+)
+de_champ = _('''
+Schachweltmeisterschaft
+'''
+)
+ru_champ = _('''
+Чемпионат мира по шахматам
+'''
+)
+ua_champ = _('''
+Чемпіонат світу з шахів
+'''
+)
+champ = {"en":en_champ, "de":de_champ, "ru":ru_champ, "ua":ua_champ, }
+
 games = {
         "KasparovVsDeepBlue_6" : "",
         "KasparovVsDeepBlue_5" : "",
@@ -239,10 +257,8 @@ def endGame(board):
        
     
 def add_point():
-    board = st.session_state.boardga
-    fen = board.fen()
-    print(fen)
-    return
+    rv = st.session_state["pil"]
+#    print(rv)
 
 def set_board(board, side = chess.WHITE):    
     bd = makeBoard(board, side)    
@@ -316,6 +332,38 @@ def main(board):
                     )
                     
             st.video(VIDEO_URL)
+            
+            st.header(champ[st.session_state.sellang])
+
+ #            st.page_link(f"", label="", icon="")
+            st.page_link(f"https://en.wikipedia.org/wiki/World_Chess_Championship", label="World Chess Championship", icon="🌎")
+            st.page_link(f"https://en.wikipedia.org/wiki/Gukesh_Dommaraju", label="Gukesh Dommaraju, India, 2024-2026", icon="🇮🇳")
+            st.page_link(f"https://en.wikipedia.org/wiki/Ding_Liren", label="Ding Liren, China, 2023-2024", icon="🇨🇳")
+            st.page_link(f"https://en.wikipedia.org/wiki/Magnus_Carlsen", label="Magnus Carlsen, Norway, 2013-2023", icon="🇳🇴")
+            st.page_link(f"https://en.wikipedia.org/wiki/Viswanathan_Anand", label="Viswanathan Anand, India, 2007-2013", icon="🇮🇳")
+            st.page_link(f"https://en.wikipedia.org/wiki/Vladimir_Kramnik", label="Vladimir Kramnik, Russia, 2006-2007", icon="🇷🇺")
+            st.page_link(f"https://en.wikipedia.org/wiki/Veselin_Topalov", label="Veselin Topalov, Bulgaria, 2005-2006", icon="🇧🇬")
+            st.page_link(f"https://en.wikipedia.org/wiki/Rustam_Kasimdzhanov", label="Rustam Kasimdzhanov, Uzbekistan, 2004-2005", icon="🇺🇿")
+            st.page_link(f"https://en.wikipedia.org/wiki/Ruslan_Ponomariov", label="Ruslan Ponomariov, Ukraine, 2002-2004", icon="🇺🇦")
+            st.page_link(f"https://en.wikipedia.org/wiki/Viswanathan_Anand", label="Viswanathan Anand, India, 2000-2002", icon="🇮🇳")
+            st.page_link(f"https://en.wikipedia.org/wiki/Alexander_Khalifman", label="Alexander Khalifman, Russia, 1999-2000", icon="🇷🇺")
+            st.page_link(f"https://en.wikipedia.org/wiki/Anatoly_Karpov", label="Anatoly Karpov, Russia, 1993-1999", icon="🇷🇺")
+            st.page_link(f"https://en.wikipedia.org/wiki/Garry_Kasparov", label="Garry Kasparov, 🟥-🇷🇺 Soviet Union-Russia, 1985-1993", icon="🇷🇺")
+            st.page_link(f"https://en.wikipedia.org/wiki/Anatoly_Karpov", label="Anatoly Karpov, Soviet Union, 1975-1985", icon="🟥")
+            st.page_link(f"https://en.wikipedia.org/wiki/Bobby_Fischer", label="Bobby Fischer, United States, 1972-1975", icon="🇺🇸")
+            st.page_link(f"https://en.wikipedia.org/wiki/Boris_Spassky", label="Boris Spassky, Soviet Union, 1969-1972", icon="🟥")
+            st.page_link(f"https://en.wikipedia.org/wiki/Tigran_Petrosian", label="Tigran Petrosian, Soviet Union, 1963-1969", icon="🟥")
+            st.page_link(f"https://en.wikipedia.org/wiki/Mikhail_Botvinnik", label="Mikhail Botvinnik, Soviet Union, 1961-1963", icon="🟥")
+            st.page_link(f"https://en.wikipedia.org/wiki/Mikhail_Tal", label="Mikhail Tal, Soviet Union, 1960-1961", icon="🟥")
+            st.page_link(f"https://en.wikipedia.org/wiki/Mikhail_Botvinnik", label="Mikhail Botvinnik, Soviet Union, 1958-1960", icon="🟥")
+            st.page_link(f"https://en.wikipedia.org/wiki/Vasily_Smyslov", label="Vasily_Smyslov, Soviet Union, 1957-1958", icon="🟥")
+            st.page_link(f"https://en.wikipedia.org/wiki/Mikhail_Botvinnik", label="Mikhail Botvinnik, Soviet Union, 1948-1957", icon="🟥")
+            st.page_link(f"https://en.wikipedia.org/wiki/Alexander_Alekhine", label="Alexander Alekhine, 🇷🇺-🇫🇷 Russia-France, 1937-1946", icon="🇫🇷")
+            st.page_link(f"https://en.wikipedia.org/wiki/Max_Euwe", label="Max Euwe, Netherlands, 1935-1937", icon="🇳🇱")
+            st.page_link(f"https://en.wikipedia.org/wiki/Alexander_Alekhine", label="Alexander Alekhine, 🇷🇺-🇫🇷 Russia-France, 1927-1935", icon="🇫🇷")
+            st.page_link(f"https://en.wikipedia.org/wiki/Jos%C3%A9_Ra%C3%BAl_Capablanca", label="Jose Raul Capablanca, Cuba, 1921-1927", icon="🇨🇺")
+            st.page_link(f"https://en.wikipedia.org/wiki/Emanuel_Lasker", label="Emanuel Lasker, Germany, 1894-1921", icon="🇩🇪")
+            st.page_link(f"https://en.wikipedia.org/wiki/Wilhelm_Steinitz", label="Wilhelm_Steinitz, 🇦🇹-🇭🇺 Austria-Hungary, United States, 1886–1894", icon="🇺🇸")
    
         except Exception as e:
             st.error(f"Failed:\n {e}")
