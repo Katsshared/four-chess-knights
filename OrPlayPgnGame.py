@@ -363,7 +363,7 @@ def main(board):
             st.page_link(f"https://en.wikipedia.org/wiki/Alexander_Alekhine", label="Alexander Alekhine, 🇷🇺-🇫🇷 Russia-France, 1927-1935", icon="🇫🇷")
             st.page_link(f"https://en.wikipedia.org/wiki/Jos%C3%A9_Ra%C3%BAl_Capablanca", label="Jose Raul Capablanca, Cuba, 1921-1927", icon="🇨🇺")
             st.page_link(f"https://en.wikipedia.org/wiki/Emanuel_Lasker", label="Emanuel Lasker, Germany, 1894-1921", icon="🇩🇪")
-            st.page_link(f"https://en.wikipedia.org/wiki/Wilhelm_Steinitz", label="Wilhelm_Steinitz, 🇦🇹-🇭🇺 Austria-Hungary, United States, 1886–1894", icon="🇺🇸")
+            st.page_link(f"https://en.wikipedia.org/wiki/Wilhelm_Steinitz", label="Wilhelm_Steinitz, 🇦🇹-🇭🇺-🇺🇸 Austria-Hungary-United States, 1886–1894", icon="🇺🇸")
    
         except Exception as e:
             st.error(f"Failed:\n {e}")
