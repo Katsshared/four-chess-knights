@@ -106,8 +106,8 @@ def selectPuzzles(flag, puzzle_sel, puzzles, show = False):
  
 tab1, tab2, tab3 = st.tabs(["I-II", "III-IV", "V-VI",])
 with tab1:
-    puzzle_sel = st.selectbox(label=" ", options=puzzles.keys(), key=1)    
-    agree = st.checkbox(label=_("Show solution"), key=12)
+    puzzle_sel = st.selectbox(label=" ", options=puzzles.keys(), key="puzzlesel")    
+    agree = st.checkbox(label=_("Show solution"), key="puzzlesol")
 
     selectPuzzles(1, puzzle_sel, puzzles, agree)
 with tab2:
