@@ -176,3 +176,9 @@ msgstr "Zushauen"
 
 msgid "Show image"
 msgstr "Bild zeigen"
+
+msgid "World Chess Championship"
+msgstr "Schachweltmeisterschaft"
+
+msgid "Chess computer"
+msgstr "Schachcomputer"

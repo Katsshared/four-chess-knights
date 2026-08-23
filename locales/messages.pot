@@ -179,3 +179,9 @@ msgstr ""
 
 msgid "Show image"
 msgstr ""
+
+msgid "World Chess Championship"
+msgstr ""
+
+msgid "Chess computer"
+msgstr ""

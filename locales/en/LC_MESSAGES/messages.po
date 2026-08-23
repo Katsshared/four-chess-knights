@@ -179,3 +179,9 @@ msgstr "Watch"
 
 msgid "Show image"
 msgstr "Show image"
+
+msgid "World Chess Championship"
+msgstr "World Chess Championship"
+
+msgid "Chess computer"
+msgstr "Chess computer"

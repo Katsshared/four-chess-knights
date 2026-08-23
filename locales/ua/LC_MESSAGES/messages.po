@@ -176,4 +176,9 @@ msgstr "Дивитися"
 msgid "Show image"
 msgstr "Показати зображення"
 
+msgid "World Chess Championship"
+msgstr "Чемпіонат світу з шахів"
+
+msgid "Chess computer"
+msgstr "Шаховий комп'ютер"
 

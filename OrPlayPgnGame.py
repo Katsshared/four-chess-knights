@@ -42,23 +42,6 @@ ua_tenpr = _('''
 )
 tenpr = {"en":en_tenpr, "de":de_tenpr, "ru":ru_tenpr, "ua":ua_tenpr, }
 
-en_champ = _('''
-World Chess Championship
-'''
-)
-de_champ = _('''
-Schachweltmeisterschaft
-'''
-)
-ru_champ = _('''
-Чемпионат мира по шахматам
-'''
-)
-ua_champ = _('''
-Чемпіонат світу з шахів
-'''
-)
-champ = {"en":en_champ, "de":de_champ, "ru":ru_champ, "ua":ua_champ, }
 
 games = {
         "KasparovVsDeepBlue_6" : "",
@@ -68,6 +51,36 @@ games = {
         "KasparovVsDeepBlue_2" : "",
         "KasparovVsDeepBlue_1" : "",
     }
+
+chmps = {
+   1:[f"https://en.wikipedia.org/wiki/Wilhelm_Steinitz", "Wilhelm Steinitz", ", 🇦🇹-🇭🇺-🇺🇸 Austria-Hungary-United States, 1886–1894", "🇺🇸"],
+   2:[f"https://en.wikipedia.org/wiki/Emanuel_Lasker", "Emanuel Lasker", ", Germany, 1894-1921", "🇩🇪"],
+   3:[f"https://en.wikipedia.org/wiki/Jos%C3%A9_Ra%C3%BAl_Capablanca", "Jose Raul Capablanca", ", Cuba, 1921-1927", "🇨🇺"],
+   4:[f"https://en.wikipedia.org/wiki/Alexander_Alekhine", "Alexander Alekhine", ", 🇷🇺-🇫🇷 Russia-France, 1927-1935", "🇫🇷"],
+   5:[f"https://en.wikipedia.org/wiki/Max_Euwe", "Max Euwe", ", Netherlands, 1935-1937", "🇳🇱"],
+   6:[f"https://en.wikipedia.org/wiki/Alexander_Alekhine", "Alexander Alekhine", ", 🇷🇺-🇫🇷 Russia-France, 1937-1946", "🇫🇷"],
+   7:[f"https://en.wikipedia.org/wiki/Mikhail_Botvinnik", "Mikhail Botvinnik", ", Soviet Union, 1948-1957", "🟥"],
+   8:[f"https://en.wikipedia.org/wiki/Vasily_Smyslov", "Vasily Smyslov", ", Soviet Union, 1957-1958", "🟥"],
+   9:[f"https://en.wikipedia.org/wiki/Mikhail_Botvinnik", "Mikhail Botvinnik", ", Soviet Union, 1958-1960", "🟥"],
+   10:[f"https://en.wikipedia.org/wiki/Mikhail_Tal", "Mikhail Tal", ", Soviet Union, 1960-1961", "🟥"],
+   11:[f"https://en.wikipedia.org/wiki/Mikhail_Botvinnik", "Mikhail Botvinnik", ", Soviet Union, 1961-1963", "🟥"],
+   12:[f"https://en.wikipedia.org/wiki/Tigran_Petrosian", "Tigran Petrosian", ", Soviet Union, 1963-1969", "🟥"],
+   13:[f"https://en.wikipedia.org/wiki/Boris_Spassky", "Boris Spassky", ", Soviet Union, 1969-1972", "🟥"],
+   14:[f"https://en.wikipedia.org/wiki/Bobby_Fischer", "Bobby Fischer", ", United States, 1972-1975", "🇺🇸"],
+   15:[f"https://en.wikipedia.org/wiki/Anatoly_Karpov", "Anatoly Karpov", ", Soviet Union, 1975-1985", "🟥"],
+   16:[f"https://en.wikipedia.org/wiki/Garry_Kasparov", "Garry Kasparov", ", 🟥-🇷🇺 Soviet Union-Russia, 1985-1993", "🇷🇺"],
+   17:[f"https://en.wikipedia.org/wiki/Anatoly_Karpov", "Anatoly Karpov", ", Russia, 1993-1999", "🇷🇺"],
+   18:[f"https://en.wikipedia.org/wiki/Alexander_Khalifman", "Alexander Khalifman", ", Russia, 1999-2000", "🇷🇺"],
+   19:[f"https://en.wikipedia.org/wiki/Viswanathan_Anand", "Viswanathan Anand", ", India, 2000-2002", "🇮🇳"],
+   20:["https://en.wikipedia.org/wiki/Ruslan_Ponomariov", "Ruslan Ponomariov", ", Ukraine, 2002-2004", "🇺🇦"],
+   21:[f"https://en.wikipedia.org/wiki/Rustam_Kasimdzhanov", "Rustam Kasimdzhanov", ", Uzbekistan, 2004-2005", "🇺🇿"],
+   22:[f"https://en.wikipedia.org/wiki/Veselin_Topalov", "Veselin Topalov", ", Bulgaria, 2005-2006", "🇧🇬"],
+   23:[f"https://en.wikipedia.org/wiki/Vladimir_Kramnik", "Vladimir Kramnik", ", Russia, 2006-2007", "🇷🇺"],
+   24:[f"https://en.wikipedia.org/wiki/Viswanathan_Anand", "Viswanathan Anand", ", India, 2007-2013", "🇮🇳"],
+   25:[f"https://en.wikipedia.org/wiki/Magnus_Carlsen", "Magnus Carlsen", ", Norway, 2013-2023", "🇳🇴"],
+   26:[f"https://en.wikipedia.org/wiki/Ding_Liren", "Ding Liren", ", China, 2023-2024", "🇨🇳"],
+   27:[f"https://en.wikipedia.org/wiki/Gukesh_Dommaraju", "Gukesh Dommaraju", ", India, 2024-2026", "🇮🇳"],
+}
 
 st.title(_("Watch"))
 
@@ -286,36 +299,6 @@ def selectGame(game_sel):
 
     return moves      
 
-chmps = {
-   1:[f"https://en.wikipedia.org/wiki/Wilhelm_Steinitz", "Wilhelm Steinitz", ", 🇦🇹-🇭🇺-🇺🇸 Austria-Hungary-United States, 1886–1894", "🇺🇸"],
-   2:[f"https://en.wikipedia.org/wiki/Emanuel_Lasker", "Emanuel Lasker", ", Germany, 1894-1921", "🇩🇪"],
-   3:[f"https://en.wikipedia.org/wiki/Jos%C3%A9_Ra%C3%BAl_Capablanca", "Jose Raul Capablanca", ", Cuba, 1921-1927", "🇨🇺"],
-   4:[f"https://en.wikipedia.org/wiki/Alexander_Alekhine", "Alexander Alekhine", ", 🇷🇺-🇫🇷 Russia-France, 1927-1935", "🇫🇷"],
-   5:[f"https://en.wikipedia.org/wiki/Max_Euwe", "Max Euwe", ", Netherlands, 1935-1937", "🇳🇱"],
-   6:[f"https://en.wikipedia.org/wiki/Alexander_Alekhine", "Alexander Alekhine", ", 🇷🇺-🇫🇷 Russia-France, 1937-1946", "🇫🇷"],
-   7:[f"https://en.wikipedia.org/wiki/Mikhail_Botvinnik", "Mikhail Botvinnik", ", Soviet Union, 1948-1957", "🟥"],
-   8:[f"https://en.wikipedia.org/wiki/Vasily_Smyslov", "Vasily Smyslov", ", Soviet Union, 1957-1958", "🟥"],
-   9:[f"https://en.wikipedia.org/wiki/Mikhail_Botvinnik", "Mikhail Botvinnik", ", Soviet Union, 1958-1960", "🟥"],
-   10:[f"https://en.wikipedia.org/wiki/Mikhail_Tal", "Mikhail Tal", ", Soviet Union, 1960-1961", "🟥"],
-   11:[f"https://en.wikipedia.org/wiki/Mikhail_Botvinnik", "Mikhail Botvinnik", ", Soviet Union, 1961-1963", "🟥"],
-   12:[f"https://en.wikipedia.org/wiki/Tigran_Petrosian", "Tigran Petrosian", ", Soviet Union, 1963-1969", "🟥"],
-   13:[f"https://en.wikipedia.org/wiki/Boris_Spassky", "Boris Spassky", ", Soviet Union, 1969-1972", "🟥"],
-   14:[f"https://en.wikipedia.org/wiki/Bobby_Fischer", "Bobby Fischer", ", United States, 1972-1975", "🇺🇸"],
-   15:[f"https://en.wikipedia.org/wiki/Anatoly_Karpov", "Anatoly Karpov", ", Russia, 1975-1985", "🇷🇺"],
-   16:[f"https://en.wikipedia.org/wiki/Garry_Kasparov", "Garry Kasparov", ", 🟥-🇷🇺 Soviet Union-Russia, 1985-1993", "🇷🇺"],
-   17:[f"https://en.wikipedia.org/wiki/Anatoly_Karpov", "Anatoly Karpov", ", Russia, 1993-1999", "🇷🇺"],
-   18:[f"https://en.wikipedia.org/wiki/Alexander_Khalifman", "Alexander Khalifman", ", Russia, 1999-2000", "🇷🇺"],
-   19:[f"https://en.wikipedia.org/wiki/Viswanathan_Anand", "Viswanathan Anand", ", India, 2000-2002", "🇮🇳"],
-   20:["https://en.wikipedia.org/wiki/Ruslan_Ponomariov", "Ruslan Ponomariov", ", Ukraine, 2002-2004", "🇺🇦"],
-   21:[f"https://en.wikipedia.org/wiki/Rustam_Kasimdzhanov", "Rustam Kasimdzhanov", ", Uzbekistan, 2004-2005", "🇺🇿"],
-   22:[f"https://en.wikipedia.org/wiki/Veselin_Topalov", "Veselin Topalov", ", Bulgaria, 2005-2006", "🇧🇬"],
-   23:[f"https://en.wikipedia.org/wiki/Vladimir_Kramnik", "Vladimir Kramnik", ", Russia, 2006-2007", "🇷🇺"],
-   24:[f"https://en.wikipedia.org/wiki/Viswanathan_Anand", "Viswanathan Anand", ", India, 2007-2013", "🇮🇳"],
-   25:[f"https://en.wikipedia.org/wiki/Magnus_Carlsen", "Magnus Carlsen", ", Norway, 2013-2023", "🇳🇴"],
-   26:[f"https://en.wikipedia.org/wiki/Ding_Liren", "Ding Liren", ", China, 2023-2024", "🇨🇳"],
-   27:[f"https://en.wikipedia.org/wiki/Gukesh_Dommaraju", "Gukesh Dommaraju", ", India, 2024-2026", "🇮🇳"],
-}
-
 def renderChamps():
     sz = len(chmps)
     for i in range(0, len(chmps)):
@@ -326,6 +309,13 @@ def renderChamps():
             if (st.checkbox(label=_("Show image"), key="plink_" + str(i+1))): st.image("images/" + ar[1] + ".png")
     
 def main(board):
+                
+    st.header(_("World Chess Championship"))
+
+    st.page_link(f"https://en.wikipedia.org/wiki/World_Chess_Championship", label="World Chess Championship", icon="🌎")
+    renderChamps()
+    
+    st.header(_("Chess computer") + " Deep Blue")
                                  
     st.write(tenpr[st.session_state.sellang])   
 
@@ -371,11 +361,6 @@ def main(board):
                     )
                     
             st.video(VIDEO_URL)
-            
-            st.header(champ[st.session_state.sellang])
-
-            st.page_link(f"https://en.wikipedia.org/wiki/World_Chess_Championship", label="World Chess Championship", icon="🌎")
-            renderChamps()
             
         except Exception as e:
             st.error(f"Failed:\n {e}")

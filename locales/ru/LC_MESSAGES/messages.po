@@ -193,3 +193,9 @@ msgstr "Смотреть"
 
 msgid "Show image"
 msgstr "Показать изображение"
+
+msgid "World Chess Championship"
+msgstr "Чемпионат мира по шахматам"
+
+msgid "Chess computer"
+msgstr "Шахматный компьютер"
