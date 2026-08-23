@@ -315,7 +315,9 @@ def main(board):
     st.page_link(f"https://en.wikipedia.org/wiki/World_Chess_Championship", label="World Chess Championship", icon="🌎")
     renderChamps()
     
+#    with st.container(horizontal=True, horizontal_alignment="left"):
     st.header(_("Chess computer") + " Deep Blue")
+    if (st.checkbox(label=_("Show image"), key="DeepBlue")): st.image("images/Deep Blue.png")
                                  
     st.write(tenpr[st.session_state.sellang])   
 
