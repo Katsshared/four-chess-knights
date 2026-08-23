@@ -1,0 +1,201 @@
+# Russian translations for PACKAGE package.
+# Copyright (C) 2026 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Automatically generated, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-07-11 15:28+0200\n"
+"PO-Revision-Date: 2026-06-28 14:52+0200\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#: OrFourKnights.py:60
+msgid "Four Chess Knights"
+msgstr "Четыре шахматных рыцаря"
+
+#: OrFourKnights.py:62 OrHelloWorld.py:32 OrChessPuzzles.py:15
+msgid "Chess puzzles"
+msgstr "Шахматные задачи"
+
+#: OrSelectLanguage.py:51 OrHelloWorld.py:21
+msgid "About us"
+msgstr "О нас"
+
+#: OrSelectLanguage.py:55
+msgid "We are the Four Chess Knights club"
+msgstr "Мы — клуб Четыре шахматных рыцаря"
+
+#: OrSelectLanguage.py:61 OrHelloWorld.py:35
+msgid "Our students' achievements"
+msgstr "Достижения наших студентов"
+
+#: OrChessPuzzles.py:30
+msgid "Show solution"
+msgstr "Показать решение"
+
+#: OrChessPuzzles.py:35
+msgid "White to mate in two moves"
+msgstr "Белые ставят мат в два хода"
+
+#: OrChessPuzzles.py:37
+msgid "White to mate in one move"
+msgstr "Белые ставят мат в один ход"
+
+#: OrChessPuzzles.py:39
+msgid "Black to mate in two moves"
+msgstr "Черные ставят мат в два хода"
+
+#: OrChessPuzzles.py:41
+msgid "Black to mate in one move"
+msgstr "Черные ставят мат в один ход"
+
+#: OrFourKnights.py:64
+msgid "Contact"
+msgstr "Контакт"
+
+msgid "moves"
+msgstr "ходов"
+
+msgid "chess"
+msgstr "шахматы"
+
+msgid "Play"
+msgstr "Играть"
+
+msgid "White"
+msgstr "Белые"
+
+msgid "Black"
+msgstr "Черные"
+
+#: OrChessPuzzles.py:66
+msgid "White to mate in"
+msgstr "Белые ставят мат в"
+
+#: OrChessPuzzles.py:68
+msgid "Black to mate in"
+msgstr "Черные ставят мат в"
+
+#: OrGmailContact.py:45
+msgid "Contact Form"
+msgstr "Форма обратной связи"
+
+#: OrGmailContact.py:79
+msgid "Email Form"
+msgstr "Форма отправки электронного письма"
+
+#: OrGmailContact.py:80
+msgid "Subject"
+msgstr "Тема"
+
+#: OrGmailContact.py:80
+msgid "Please enter subject of your mail"
+msgstr "Пожалуйста, укажите тему вашего письма."
+
+#: OrGmailContact.py:81
+msgid "Full Name"
+msgstr "Полное имя"
+
+#: OrGmailContact.py:81
+msgid "Please enter your full name"
+msgstr "Пожалуйста, введите ваше полное имя"
+
+#: OrGmailContact.py:82
+msgid "Email Address"
+msgstr "Адрес электронной почты"
+
+#: OrGmailContact.py:82
+msgid "Please enter your email address"
+msgstr "Пожалуйста, введите свой адрес электронной почты"
+
+#: OrGmailContact.py:83
+msgid "Email Text"
+msgstr "Текст электронного письма"
+
+#: OrGmailContact.py:83
+msgid "Please enter your text here"
+msgstr "Пожалуйста, введите свой текст здесь"
+
+#: OrGmailContact.py:84
+msgid "Attachment"
+msgstr "Приложение"
+
+#: OrGmailContact.py:85
+msgid "Send"
+msgstr "Послать"
+
+#: OrGmailContact.py:100
+msgid "Email sent successfully!"
+msgstr "Письмо успешно отправлено!"
+
+
+msgid "Win"
+msgstr "Победа"
+
+msgid "Draw"
+msgstr "Ничья"
+
+msgid "Loss"
+msgstr "Проигрыш"
+
+msgid "Scores"
+msgstr "Очки"
+
+msgid "Students"
+msgstr "Студенты"
+
+msgid "Name"
+msgstr "Имя"
+
+msgid "GAME OVER!"
+msgstr "ИГРА ЗАКОНЧЕНА!"
+
+msgid "Depth"
+msgstr "Глубина"
+
+msgid "Choose White or Black"
+msgstr "Выберите Белые или Черные"
+
+msgid "Strategy"
+msgstr "Стратегия"
+
+msgid "Tactic"
+msgstr "Тактика"
+
+msgid "Debut"
+msgstr "Дебют"
+
+#: OrChessStrategy.py:210
+msgid "Chess strategy"
+msgstr "Шахматная стратегия"
+
+#: OrChessStrategy.py:211
+msgid "10 principles of Wilhelm Steinitz"
+msgstr "10 принципов Вильгельма Стейница"
+
+msgid "Chess editor"
+msgstr "Шахматный редактор"
+
+msgid "Difficulty"
+msgstr "Сложность"
+
+msgid "Watch"
+msgstr "Смотреть"
+
+msgid "Show image"
+msgstr "Показать изображение"
+
+msgid "World Chess Championship"
+msgstr "Чемпионат мира по шахматам"
+
+msgid "Chess computer"
+msgstr "Шахматный компьютер"

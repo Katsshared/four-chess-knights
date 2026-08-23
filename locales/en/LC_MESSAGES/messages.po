@@ -1,0 +1,187 @@
+# English translations for PACKAGE package.
+# Copyright (C) 2026 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Automatically generated, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-07-11 15:28+0200\n"
+"PO-Revision-Date: 2026-07-11 15:28+0200\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: en_EN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: OrFourKnights.py:60
+msgid "Four Chess Knights"
+msgstr "Four Chess Knights"
+
+#: OrFourKnights.py:61 OrHelloWorld.py:19
+msgid "Hello world"
+msgstr "Hello world"
+
+#: OrFourKnights.py:62 OrHelloWorld.py:32 OrChessPuzzles.py:15
+msgid "Chess puzzles"
+msgstr "Chess puzzles"
+
+#: OrFourKnights.py:65
+msgid "This is a translatable string"
+msgstr "This is a translatable string"
+
+#: OrSelectLanguage.py:51 OrHelloWorld.py:21
+msgid "About us"
+msgstr "About us"
+
+#: OrSelectLanguage.py:55
+msgid "We are the Four Chess Knights club"
+msgstr "We are the Four Chess Knights club"
+
+#: OrSelectLanguage.py:61 OrHelloWorld.py:35
+msgid "Our students' achievements"
+msgstr "Our students' achievements"
+
+#: OrChessPuzzles.py:112
+msgid "Show solution"
+msgstr "Show solution"
+
+msgid "moves"
+msgstr "moves"
+
+msgid "chess"
+msgstr "chess"
+
+msgid "Play"
+msgstr "Play"
+
+msgid "White"
+msgstr "White"
+
+msgid "Black"
+msgstr "Black"
+
+#: OrChessPuzzles.py:66
+msgid "White to mate in"
+msgstr "White to mate in"
+
+#: OrChessPuzzles.py:68
+msgid "Black to mate in"
+msgstr "Black to mate in"
+
+#: OrGmailContact.py:45
+msgid "Contact Form"
+msgstr "Contact Form"
+
+#: OrGmailContact.py:79
+msgid "Email Form"
+msgstr "Email Form"
+
+#: OrGmailContact.py:80
+msgid "Subject"
+msgstr "Subject"
+
+#: OrGmailContact.py:80
+msgid "Please enter subject of your mail"
+msgstr "Please enter subject of your mail"
+
+#: OrGmailContact.py:81
+msgid "Full Name"
+msgstr "Full Name"
+
+#: OrGmailContact.py:81
+msgid "Please enter your full name"
+msgstr "Please enter your full name"
+
+#: OrGmailContact.py:82
+msgid "Email Address"
+msgstr "Email Address"
+
+#: OrGmailContact.py:82
+msgid "Please enter your email address"
+msgstr "Please enter your email address"
+
+#: OrGmailContact.py:83
+msgid "Email Text"
+msgstr "Email Text"
+
+#: OrGmailContact.py:83
+msgid "Please enter your text here"
+msgstr "Please enter your text here"
+
+#: OrGmailContact.py:84
+msgid "Attachment"
+msgstr "Attachment"
+
+#: OrGmailContact.py:85
+msgid "Send"
+msgstr "Send"
+
+#: OrGmailContact.py:100
+msgid "Email sent successfully!"
+msgstr "Email sent successfully!"
+
+msgid "Win"
+msgstr "Win"
+
+msgid "Draw"
+msgstr "Draw"
+
+msgid "Loss"
+msgstr "Loss"
+
+msgid "Scores"
+msgstr "Scores"
+
+msgid "Students"
+msgstr "Students"
+
+msgid "Name"
+msgstr "Name"
+
+msgid "GAME OVER!"
+msgstr "GAME OVER!"
+
+msgid "Choose White or Black"
+msgstr "Choose White or Black"
+
+msgid "Depth"
+msgstr "Depth"
+
+msgid "Strategy"
+msgstr "Strategy"
+
+msgid "Tactic"
+msgstr "Tactic"
+
+msgid "Debut"
+msgstr "Debut"
+
+#: OrChessStrategy.py:210
+msgid "Chess strategy"
+msgstr "Chess strategy"
+
+#: OrChessStrategy.py:211
+msgid "10 principles of Wilhelm Steinitz"
+msgstr "10 principles of Wilhelm Steinitz"
+
+msgid "Chess editor"
+msgstr "Chess editor"
+
+msgid "Difficulty"
+msgstr "Difficulty"
+
+msgid "Watch"
+msgstr "Watch"
+
+msgid "Show image"
+msgstr "Show image"
+
+msgid "World Chess Championship"
+msgstr "World Chess Championship"
+
+msgid "Chess computer"
+msgstr "Chess computer"
