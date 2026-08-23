@@ -176,3 +176,6 @@ msgstr "Difficulty"
 
 msgid "Watch"
 msgstr "Watch"
+
+msgid "Show image"
+msgstr "Show image"

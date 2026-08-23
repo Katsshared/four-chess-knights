@@ -176,3 +176,6 @@ msgstr ""
 
 msgid "Watch"
 msgstr ""
+
+msgid "Show image"
+msgstr ""

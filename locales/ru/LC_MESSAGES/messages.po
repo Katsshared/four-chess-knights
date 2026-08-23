@@ -191,3 +191,5 @@ msgstr "Сложность"
 msgid "Watch"
 msgstr "Смотреть"
 
+msgid "Show image"
+msgstr "Показать изображение"

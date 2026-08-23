@@ -285,6 +285,45 @@ def selectGame(game_sel):
         initGame(st.session_state.boardga)
 
     return moves      
+
+chmps = {
+   1:[f"https://en.wikipedia.org/wiki/Wilhelm_Steinitz", "Wilhelm Steinitz", ", 🇦🇹-🇭🇺-🇺🇸 Austria-Hungary-United States, 1886–1894", "🇺🇸"],
+   2:[f"https://en.wikipedia.org/wiki/Emanuel_Lasker", "Emanuel Lasker", ", Germany, 1894-1921", "🇩🇪"],
+   3:[f"https://en.wikipedia.org/wiki/Jos%C3%A9_Ra%C3%BAl_Capablanca", "Jose Raul Capablanca", ", Cuba, 1921-1927", "🇨🇺"],
+   4:[f"https://en.wikipedia.org/wiki/Alexander_Alekhine", "Alexander Alekhine", ", 🇷🇺-🇫🇷 Russia-France, 1927-1935", "🇫🇷"],
+   5:[f"https://en.wikipedia.org/wiki/Max_Euwe", "Max Euwe", ", Netherlands, 1935-1937", "🇳🇱"],
+   6:[f"https://en.wikipedia.org/wiki/Alexander_Alekhine", "Alexander Alekhine", ", 🇷🇺-🇫🇷 Russia-France, 1937-1946", "🇫🇷"],
+   7:[f"https://en.wikipedia.org/wiki/Mikhail_Botvinnik", "Mikhail Botvinnik", ", Soviet Union, 1948-1957", "🟥"],
+   8:[f"https://en.wikipedia.org/wiki/Vasily_Smyslov", "Vasily Smyslov", ", Soviet Union, 1957-1958", "🟥"],
+   9:[f"https://en.wikipedia.org/wiki/Mikhail_Botvinnik", "Mikhail Botvinnik", ", Soviet Union, 1958-1960", "🟥"],
+   10:[f"https://en.wikipedia.org/wiki/Mikhail_Tal", "Mikhail Tal", ", Soviet Union, 1960-1961", "🟥"],
+   11:[f"https://en.wikipedia.org/wiki/Mikhail_Botvinnik", "Mikhail Botvinnik", ", Soviet Union, 1961-1963", "🟥"],
+   12:[f"https://en.wikipedia.org/wiki/Tigran_Petrosian", "Tigran Petrosian", ", Soviet Union, 1963-1969", "🟥"],
+   13:[f"https://en.wikipedia.org/wiki/Boris_Spassky", "Boris Spassky", ", Soviet Union, 1969-1972", "🟥"],
+   14:[f"https://en.wikipedia.org/wiki/Bobby_Fischer", "Bobby Fischer", ", United States, 1972-1975", "🇺🇸"],
+   15:[f"https://en.wikipedia.org/wiki/Anatoly_Karpov", "Anatoly Karpov", ", Russia, 1975-1985", "🇷🇺"],
+   16:[f"https://en.wikipedia.org/wiki/Garry_Kasparov", "Garry Kasparov", ", 🟥-🇷🇺 Soviet Union-Russia, 1985-1993", "🇷🇺"],
+   17:[f"https://en.wikipedia.org/wiki/Anatoly_Karpov", "Anatoly Karpov", ", Russia, 1993-1999", "🇷🇺"],
+   18:[f"https://en.wikipedia.org/wiki/Alexander_Khalifman", "Alexander Khalifman", ", Russia, 1999-2000", "🇷🇺"],
+   19:[f"https://en.wikipedia.org/wiki/Viswanathan_Anand", "Viswanathan Anand", ", India, 2000-2002", "🇮🇳"],
+   20:["https://en.wikipedia.org/wiki/Ruslan_Ponomariov", "Ruslan Ponomariov", ", Ukraine, 2002-2004", "🇺🇦"],
+   21:[f"https://en.wikipedia.org/wiki/Rustam_Kasimdzhanov", "Rustam Kasimdzhanov", ", Uzbekistan, 2004-2005", "🇺🇿"],
+   22:[f"https://en.wikipedia.org/wiki/Veselin_Topalov", "Veselin Topalov", ", Bulgaria, 2005-2006", "🇧🇬"],
+   23:[f"https://en.wikipedia.org/wiki/Vladimir_Kramnik", "Vladimir Kramnik", ", Russia, 2006-2007", "🇷🇺"],
+   24:[f"https://en.wikipedia.org/wiki/Viswanathan_Anand", "Viswanathan Anand", ", India, 2007-2013", "🇮🇳"],
+   25:[f"https://en.wikipedia.org/wiki/Magnus_Carlsen", "Magnus Carlsen", ", Norway, 2013-2023", "🇳🇴"],
+   26:[f"https://en.wikipedia.org/wiki/Ding_Liren", "Ding Liren", ", China, 2023-2024", "🇨🇳"],
+   27:[f"https://en.wikipedia.org/wiki/Gukesh_Dommaraju", "Gukesh Dommaraju", ", India, 2024-2026", "🇮🇳"],
+}
+
+def renderChamps():
+    sz = len(chmps)
+    for i in range(0, len(chmps)):
+        key = sz - i 
+        ar = chmps[key]
+        with st.container(horizontal=True, horizontal_alignment="left"):
+            st.page_link(ar[0], label=str(key) + ". " + ar[1] + ar[2], icon=ar[3])
+            if (st.checkbox(label=_("Show image"), key="plink_" + str(i+1))): st.image("images/" + ar[1] + ".png")
     
 def main(board):
                                  
@@ -335,97 +374,15 @@ def main(board):
             
             st.header(champ[st.session_state.sellang])
 
-#            st.page_link(f"", label="", icon="")
             st.page_link(f"https://en.wikipedia.org/wiki/World_Chess_Championship", label="World Chess Championship", icon="🌎")
-            with st.container(horizontal=True, horizontal_alignment="left"):
-                st.page_link(f"https://en.wikipedia.org/wiki/Gukesh_Dommaraju", label="27. Gukesh Dommaraju, India, 2024-2026", icon="🇮🇳")
-                if (st.checkbox(label=_("Show image"), key="link_27")): st.image("images/Gukesh Dommaraju.png")
-            with st.container(horizontal=True, horizontal_alignment="left"):
-                st.page_link(f"https://en.wikipedia.org/wiki/Ding_Liren", label="26. Ding Liren, China, 2023-2024", icon="🇨🇳")
-                if (st.checkbox(label=_("Show image"), key="link_26")): st.image("images/Ding Liren.png")
-            with st.container(horizontal=True, horizontal_alignment="left"):
-                st.page_link(f"https://en.wikipedia.org/wiki/Magnus_Carlsen", label="25. Magnus Carlsen, Norway, 2013-2023", icon="🇳🇴")
-                if (st.checkbox(label=_("Show image"), key="link_25")): st.image("images/Magnus Carlsen.png")
-            with st.container(horizontal=True, horizontal_alignment="left"):
-                st.page_link(f"https://en.wikipedia.org/wiki/Viswanathan_Anand", label="24. Viswanathan Anand, India, 2007-2013", icon="🇮🇳")
-                if (st.checkbox(label=_("Show image"), key="link_24")): st.image("images/Viswanathan Anand.png")
-            with st.container(horizontal=True, horizontal_alignment="left"):
-                st.page_link(f"https://en.wikipedia.org/wiki/Vladimir_Kramnik", label="23. Vladimir Kramnik, Russia, 2006-2007", icon="🇷🇺")
-                if (st.checkbox(label=_("Show image"), key="link_23")): st.image("images/Vladimir Kramnik.png")
-            with st.container(horizontal=True, horizontal_alignment="left"):
-                st.page_link(f"https://en.wikipedia.org/wiki/Veselin_Topalov", label="22. Veselin Topalov, Bulgaria, 2005-2006", icon="🇧🇬")
-                if (st.checkbox(label=_("Show image"), key="link_22")): st.image("images/Veselin Topalov.png")
-            with st.container(horizontal=True, horizontal_alignment="left"):
-                st.page_link(f"https://en.wikipedia.org/wiki/Rustam_Kasimdzhanov", label="21. Rustam Kasimdzhanov, Uzbekistan, 2004-2005", icon="🇺🇿")
-                if (st.checkbox(label=_("Show image"), key="link_21")): st.image("images/Rustam Kasimdzhanov.png")
-            with st.container(horizontal=True, horizontal_alignment="left"):
-                st.page_link(f"https://en.wikipedia.org/wiki/Ruslan_Ponomariov", label="20. Ruslan Ponomariov, Ukraine, 2002-2004", icon="🇺🇦")
-                if (st.checkbox(label=_("Show image"), key="link_20")): st.image("images/Ruslan Ponomariov.png")
-            with st.container(horizontal=True, horizontal_alignment="left"):
-                st.page_link(f"https://en.wikipedia.org/wiki/Viswanathan_Anand", label="19. Viswanathan Anand, India, 2000-2002", icon="🇮🇳")
-                if (st.checkbox(label=_("Show image"), key="link_19")): st.image("images/Viswanathan Anand.png")
-            with st.container(horizontal=True, horizontal_alignment="left"):
-                st.page_link(f"https://en.wikipedia.org/wiki/Alexander_Khalifman", label="18. Alexander Khalifman, Russia, 1999-2000", icon="🇷🇺")
-                if (st.checkbox(label=_("Show image"), key="link_18")): st.image("images/Alexander Khalifman.png")
-            with st.container(horizontal=True, horizontal_alignment="left"):
-                st.page_link(f"https://en.wikipedia.org/wiki/Anatoly_Karpov", label="17. Anatoly Karpov, Russia, 1993-1999", icon="🇷🇺")
-                if (st.checkbox(label=_("Show image"), key="link_17")): st.image("images/Anatoly Karpov.png")
-            with st.container(horizontal=True, horizontal_alignment="left"):
-                st.page_link(f"https://en.wikipedia.org/wiki/Garry_Kasparov", label="16. Garry Kasparov, 🟥-🇷🇺 Soviet Union-Russia, 1985-1993", icon="🇷🇺")
-                if (st.checkbox(label=_("Show image"), key="link_16")): st.image("images/Garry Kasparov.png")
-            with st.container(horizontal=True, horizontal_alignment="left"):
-                st.page_link(f"https://en.wikipedia.org/wiki/Anatoly_Karpov", label="15. Anatoly Karpov, Soviet Union, 1975-1985", icon="🟥")
-                if (st.checkbox(label=_("Show image"), key="link_15")): st.image("images/Anatoly Karpov.png")
-            with st.container(horizontal=True, horizontal_alignment="left"):
-                st.page_link(f"https://en.wikipedia.org/wiki/Bobby_Fischer", label="14. Bobby Fischer, United States, 1972-1975", icon="🇺🇸")
-                if (st.checkbox(label=_("Show image"), key="link_14")): st.image("images/Bobby Fischer.png")
-            with st.container(horizontal=True, horizontal_alignment="left"):
-                st.page_link(f"https://en.wikipedia.org/wiki/Boris_Spassky", label="13. Boris Spassky, Soviet Union, 1969-1972", icon="🟥")
-                if (st.checkbox(label=_("Show image"), key="link_13")): st.image("images/Boris Spassky.png")
-            with st.container(horizontal=True, horizontal_alignment="left"):
-                st.page_link(f"https://en.wikipedia.org/wiki/Tigran_Petrosian", label="12. Tigran Petrosian, Soviet Union, 1963-1969", icon="🟥")
-                if (st.checkbox(label=_("Show image"), key="link_12")): st.image("images/Tigran Petrosian.png")
-            with st.container(horizontal=True, horizontal_alignment="left"):
-                st.page_link(f"https://en.wikipedia.org/wiki/Mikhail_Botvinnik", label="11. Mikhail Botvinnik, Soviet Union, 1961-1963", icon="🟥")
-                if (st.checkbox(label=_("Show image"), key="link_11")): st.image("images/Mikhail Botvinnik.png")
-            with st.container(horizontal=True, horizontal_alignment="left"):
-                st.page_link(f"https://en.wikipedia.org/wiki/Mikhail_Tal", label="10. Mikhail Tal, Soviet Union, 1960-1961", icon="🟥")
-                if (st.checkbox(label=_("Show image"), key="link_10")): st.image("images/Mikhail Tal.png")
-            with st.container(horizontal=True, horizontal_alignment="left"):
-                st.page_link(f"https://en.wikipedia.org/wiki/Mikhail_Botvinnik", label="9. Mikhail Botvinnik, Soviet Union, 1958-1960", icon="🟥")
-                if (st.checkbox(label=_("Show image"), key="link_9")): st.image("images/Mikhail Botvinnik.png")
-            with st.container(horizontal=True, horizontal_alignment="left"):
-                st.page_link(f"https://en.wikipedia.org/wiki/Vasily_Smyslov", label="8. Vasily Smyslov, Soviet Union, 1957-1958", icon="🟥")
-                if (st.checkbox(label=_("Show image"), key="link_8")): st.image("images/Vasily Smyslov.png")
-            with st.container(horizontal=True, horizontal_alignment="left"):
-                st.page_link(f"https://en.wikipedia.org/wiki/Mikhail_Botvinnik", label="7. Mikhail Botvinnik, Soviet Union, 1948-1957", icon="🟥")
-                if (st.checkbox(label=_("Show image"), key="link_7")): st.image("images/Mikhail Botvinnik.png")
-            with st.container(horizontal=True, horizontal_alignment="left"):
-                st.page_link(f"https://en.wikipedia.org/wiki/Alexander_Alekhine", label="6. Alexander Alekhine, 🇷🇺-🇫🇷 Russia-France, 1937-1946", icon="🇫🇷")
-                if (st.checkbox(label=_("Show image"), key="link_6")): st.image("images/Alexander Alekhine.png")
-            with st.container(horizontal=True, horizontal_alignment="left"):
-                st.page_link(f"https://en.wikipedia.org/wiki/Max_Euwe", label="5. Max Euwe, Netherlands, 1935-1937", icon="🇳🇱")
-                if (st.checkbox(label=_("Show image"), key="link_5")): st.image("images/Max Euwe.png")
-            with st.container(horizontal=True, horizontal_alignment="left"):
-                st.page_link(f"https://en.wikipedia.org/wiki/Alexander_Alekhine", label="4. Alexander Alekhine, 🇷🇺-🇫🇷 Russia-France, 1927-1935", icon="🇫🇷")
-                if (st.checkbox(label=_("Show image"), key="link_4")): st.image("images/Alexander Alekhine.png")
-            with st.container(horizontal=True, horizontal_alignment="left"):
-                st.page_link(f"https://en.wikipedia.org/wiki/Jos%C3%A9_Ra%C3%BAl_Capablanca", label="3. Jose Raul Capablanca, Cuba, 1921-1927", icon="🇨🇺")
-                if (st.checkbox(label=_("Show image"), key="link_3")): st.image("images/Jose Raul Capablanca.png")
-            with st.container(horizontal=True, horizontal_alignment="left"):
-                st.page_link(f"https://en.wikipedia.org/wiki/Emanuel_Lasker", label="2. Emanuel Lasker, Germany, 1894-1921", icon="🇩🇪")
-                if (st.checkbox(label=_("Show image"), key="link_2")): st.image("images/Emanuel Lasker.png")
-            with st.container(horizontal=True, horizontal_alignment="left"):
-                st.page_link(f"https://en.wikipedia.org/wiki/Wilhelm_Steinitz", label="1. Wilhelm Steinitz, 🇦🇹-🇭🇺-🇺🇸 Austria-Hungary-United States, 1886–1894", icon="🇺🇸")
-                if (st.checkbox(label=_("Show image"), key="link_1")): st.image("images/Wilhelm Steinitz.png")
-   
+            renderChamps()
+            
         except Exception as e:
             st.error(f"Failed:\n {e}")
             
     with col2:
         showHistory()
-
-
+        
 if __name__ == '__main__':
     main(st.session_state.boardga)
     

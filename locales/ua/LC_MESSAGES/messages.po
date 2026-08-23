@@ -172,3 +172,8 @@ msgstr "Складність"
 
 msgid "Watch"
 msgstr "Дивитися"
+
+msgid "Show image"
+msgstr "Показати зображення"
+
+

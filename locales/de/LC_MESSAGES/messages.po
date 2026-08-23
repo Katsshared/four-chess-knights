@@ -173,3 +173,6 @@ msgstr "Schwierigkeit"
 
 msgid "Watch"
 msgstr "Zushauen"
+
+msgid "Show image"
+msgstr "Bild zeigen"
