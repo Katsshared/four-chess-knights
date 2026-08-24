@@ -21,21 +21,25 @@ localizator.install()
 _ = localizator.gettext 
 
 en_tenpr = _('''
+Deep Blue was a chess computer developed by IBM.
 In a rematch of six games (May 3-11, 1997) against Kasparov, Deep Blue prevailed with 3.5:2.5 points.
 This marked the first time a computer had won a match under tournament conditions against the reigning world chess champion.
 '''
 )
 de_tenpr = _('''
+Deep Blue war ein vom IBM entwickelter Schachcomputer. 
 In einem Rematch aus sechs Partien (3. bis 11. Mai 1997) gegen Kasparov gewann Deep Blue mit 3,5:2,5 Punkten die Oberhand. 
 Damit hatte zum ersten Mal ein Computer einen Wettkampf unter Turnierbedingungen gegen den amtierenden Schachweltmeister gewonnen.
 '''
 )
 ru_tenpr = _('''
+Deep Blue — это шахматный компьютер, разработанный компанией IBM.
 В матче-реванше из шести партий (3-11 мая 1997 г.) против Каспарова Deep Blue одержал победу со счетом 3,5:2,5. 
 Это был первый случай, когда компьютер выиграл матч в турнирных условиях у действующего чемпиона мира по шахматам.
 '''
 )
 ua_tenpr = _('''
+Deep Blue — це шаховий комп'ютер, розроблений компанією IBM.
 У матчі-реванші з шести партій (3-11 травня 1997 року) проти Каспарова, Deep Blue переміг з рахунком 3,5:2,5 очка. 
 Це був перший випадок, коли комп'ютер виграв матч в умовах турніру проти чинного чемпіона світу з шахів.
 '''
@@ -67,7 +71,7 @@ chmps = {
    12:[f"https://en.wikipedia.org/wiki/Tigran_Petrosian", "Tigran Petrosian", ", Soviet Union, 1963-1969", "🟥"],
    13:[f"https://en.wikipedia.org/wiki/Boris_Spassky", "Boris Spassky", ", Soviet Union, 1969-1972", "🟥"],
    14:[f"https://en.wikipedia.org/wiki/Bobby_Fischer", "Bobby Fischer", ", United States, 1972-1975", "🇺🇸"],
-   15:[f"https://en.wikipedia.org/wiki/Anatoly_Karpov", "Anatoly Karpov", ", Soviet Union, 1975-1985", "🟥"],
+   15:[f"https://en.wikipedia.org/wiki/Anatoly_Karpov", " Anatoly Karpov", ", Soviet Union, 1975-1985", "🟥"],
    16:[f"https://en.wikipedia.org/wiki/Garry_Kasparov", "Garry Kasparov", ", 🟥-🇷🇺 Soviet Union-Russia, 1985-1993", "🇷🇺"],
    17:[f"https://en.wikipedia.org/wiki/Anatoly_Karpov", "Anatoly Karpov", ", Russia, 1993-1999", "🇷🇺"],
    18:[f"https://en.wikipedia.org/wiki/Alexander_Khalifman", "Alexander Khalifman", ", Russia, 1999-2000", "🇷🇺"],
