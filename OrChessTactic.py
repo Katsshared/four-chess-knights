@@ -1,10 +1,17 @@
 
+import pyvips
 import streamlit as st
+from streamlit_image_coordinates import streamlit_image_coordinates
+
+import chess
+import chess.svg
 import gettext
 
 localizator = gettext.translation('messages', localedir='locales', languages=[st.session_state.sellang])
 localizator.install() 
 _ = localizator.gettext 
+
+TACTICFILENAME = "tactic_fork.png"
 
 en_tenpr = _('''
 Basic Tactical Techniques
@@ -116,8 +123,222 @@ tenpr = {"en":en_tenpr, "de":de_tenpr, "ru":ru_tenpr, "ua":ua_tenpr, }
 st.title(_("Tactic"))
 #st.header(_("Basic tactical techniques"))
 
-st.write(tenpr[st.session_state.sellang])
+fork_dict = {
+   "1_Knight":["r2qk1nr/1bpn1ppp/p2p4/2b1p1N1/2B1P3/3P4/PPP2PPP/R1BQK2R w KQkq - 0 1", ["g5f7"],],
+   "2_Bishop":["4r1k1/p4ppp/4p1n1/8/r7/4P1P1/P4PBP/3R1RK1 w - - 0 1", ["g2c6"],],
+   "3_Pawn":["6k1/5p1p/6b1/1n1n4/8/3P1N2/2PBP1P1/4K3 w - - 0 1", ["c2c4"],],
+   "4_Knight":["4r1k1/3Q1ppp/8/2B5/p1n5/Pq1b1BP1/5P1P/3R2K1 b - - 0 1", ["b3d1", "f3d1", "e8e1", "g1g2", "d3f1", "g2f3", "c4e5"],],
+}
+
+def get_boardta():
+    board_ta = chess.Board()
+    return board_ta
+
+if "boardta" not in st.session_state:
+    st.session_state.boardta = get_boardta()
+
+def clearHistory():
+    st.session_state.historyta = []
+    
+def showHistory():
+    ls = []
+    j = 1
+    for i, move in enumerate(st.session_state.historyta):
+        text = ""
+        if i % 2 == 0:
+            text = f"{j}. {move}"
+        else:
+            text = f" {move}"
+            j = j + 1            
+        ls.append(text)
+    st.markdown(ls)
+#    print(st.session_state.historyta)
+
+def delHistory(move):
+    h = st.session_state.historyta
+    del h[st.session_state.indexta]
+    
+def addHistory(move):
+    st.session_state.historyta.append(f"{move.uci()}")
+              
+def clearBoard(board):
+    board.clear()
+      
+def saveBoard(board):
+    img = pyvips.Image.new_from_buffer(chess.svg.board(board).encode(), options="")
+    img.pngsave(TACTICFILENAME)
+
+def popMove(board):
+    moves = st.session_state.movesta
+    idx = st.session_state.indexta
+#    print("POP", moves[idx])
+    board.pop()
+    delHistory(moves[idx])
+    st.session_state.actionta = -1
+    saveBoard(board)
+
+def pushMove(board):
+    moves = st.session_state.movesta
+    idx = st.session_state.indexta
+    move = moves[idx]
+#    print("PUSH", move)
+    board.push(move)
+    addHistory(move)
+    st.session_state.actionta = +1
+    saveBoard(board)
+    
+def stepExample(board, step=1):
+    idx = st.session_state.indexta
+    moves = st.session_state.movesta
+    size = len(moves)
+    act = st.session_state.actionta
+#    print("IDX ACT SIZE STEP", idx, act, size, step)
+    
+    if act == 0:
+        if idx == 0 and step < 0:
+            return            
+        elif idx == size - 1 and idx != 0 and step > 0:
+            return
+            
+    if step < 0:
+        if act >= 0:
+            popMove(board)            
+        elif act < 0:
+            if idx > 0:
+                st.session_state.indexta = idx - 1          
+                popMove(board)
+        if st.session_state.indexta < 0:
+            st.session_state.indexta = 0
+    elif step > 0:
+        if act <= 0:
+            pushMove(board)            
+        elif act > 0:    
+            if idx < size - 1:       
+                st.session_state.indexta = idx + 1
+                pushMove(board)            
+        if st.session_state.indexta > size - 1:
+            st.session_state.indexta = size - 1    
+
+def setFen():
+    board = st.session_state.boardta
+    fdict = st.session_state.dictta
+    board.clear()
+    dc = fdict[st.session_state.tacticta]
+    board.set_fen(dc[0])
+    
+def endExample(board):
+#    initExample(board)
+    if st.session_state.actionta == +2:
+        return
+    
+    setFen()
+    clearHistory()
+    moves = st.session_state.movesta
+    size = len(moves)
+    print(moves)
+    for i in range(0, size):
+        board.push(moves[i])
+        addHistory(moves[i])
+    
+    st.session_state.actionta = 0
+    st.session_state.indexta = size -1
+    st.session_state.actionta = +2
+    
+    saveBoard(board)
+
+def initExample(board):
+    setFen()
+    st.session_state.indexta = 0
+    st.session_state.actionta = 0
+    st.session_state.historyta = []
+    
+    saveBoard(board)
+    
+    clearHistory()
+    
+def movesBoard(fdict):
+    dc = fdict[st.session_state.tacticta]
+
+    mvs = []
+    move = None
+    for mv in dc[1]:
+        try:
+#            print(mv)
+            move = chess.Move.from_uci(mv)
+             
+        except Exception as e:
+            board = st.session_state.boardta
+            move = board.push_san(mv)
+            st.error(f"Failed:\n {e}")
+
+        
+        mvs.append(move)
+    return mvs
+
+def makeBoard(fdict):
+    dc = fdict[st.session_state.tacticta]
+    board = chess.Board(dc[0])
+    
+    saveBoard(board)
+
+    return board
+    
+def selectExample(fdict, tactic_sel):
+    if "tacticta" not in st.session_state or tactic_sel != st.session_state.tacticta:
+#        print("SELECT GAME", game_sel)
+        st.session_state.dictta = fdict
+        st.session_state.tacticta = tactic_sel
+
+        st.session_state.movesta = movesBoard(fdict)
+        st.session_state.indexta = 0
+        st.session_state.actionta = 0
+        st.session_state.historyta = []
+        
+        initExample(st.session_state.boardta)
+      
+def add_point():
+    return
+
+def main(fdict):
+    tactic_sel = st.selectbox(label=" ", options=fdict.keys(), key="tacticsel_1")    
+    selectExample(fdict, tactic_sel)
+
+    col1, col2 = st.columns([0.7, 0.3])
+    
+    with col1:
+    
+        try:
+            
+            with st.container(horizontal=True, horizontal_alignment="left"):
+                streamlit_image_coordinates(
+                    TACTICFILENAME,
+                    key="pil",
+                    click_and_drag=True,
+                    on_click=add_point
+                )
+            
+            with st.container(horizontal=True, horizontal_alignment="left"):
+                bb = st.button("|<-")
+                bl = st.button("<-")
+                br = st.button("->")
+                be = st.button("->|")
+                if bb: initExample(st.session_state.boardta)
+                if be: endExample(st.session_state.boardta)
+                if bl: stepExample(st.session_state.boardta, -1)
+                if br: stepExample(st.session_state.boardta)
+            
+        except Exception as e:
+            st.error(f"Failed:\n {e}")
+            
+    with col2:
+        showHistory()
+    
+    
+if __name__ == '__main__':            
+    tab1, tab2 = st.tabs([_("Theory"), _("Fork"),])
+    with tab1:
+        st.write(tenpr[st.session_state.sellang])
+    with tab2:
+        main(fork_dict)
 
 
-if __name__ == '__main__':
-    pass
