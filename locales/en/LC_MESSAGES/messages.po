@@ -185,3 +185,9 @@ msgstr "World Chess Championship"
 
 msgid "Chess computer"
 msgstr "Chess computer"
+
+msgid "Theory"
+msgstr "Theory"
+
+msgid "Fork"
+msgstr "Fork"

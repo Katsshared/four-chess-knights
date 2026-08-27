@@ -222,7 +222,7 @@ def stepExample(board, step=1):
 def setFen():
     board = st.session_state.boardta
     fdict = st.session_state.dictta
-    board.clear()
+    clearBoard(board)
     dc = fdict[st.session_state.tacticta]
     board.set_fen(dc[0])
     
@@ -269,8 +269,7 @@ def movesBoard(fdict):
         except Exception as e:
             board = st.session_state.boardta
             move = board.push_san(mv)
-            st.error(f"Failed:\n {e}")
-
+#            st.error(f"Failed:\n {e}")
         
         mvs.append(move)
     return mvs
@@ -309,13 +308,12 @@ def main(fdict):
     
         try:
             
-            with st.container(horizontal=True, horizontal_alignment="left"):
-                streamlit_image_coordinates(
-                    TACTICFILENAME,
-                    key="pil",
-                    click_and_drag=True,
-                    on_click=add_point
-                )
+            streamlit_image_coordinates(
+                TACTICFILENAME,
+                key="pil",
+                click_and_drag=True,
+                on_click=add_point
+            )
             
             with st.container(horizontal=True, horizontal_alignment="left"):
                 bb = st.button("|<-")

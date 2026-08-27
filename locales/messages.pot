@@ -185,3 +185,9 @@ msgstr ""
 
 msgid "Chess computer"
 msgstr ""
+
+msgid "Theory"
+msgstr ""
+
+msgid "Fork"
+msgstr ""

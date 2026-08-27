@@ -182,3 +182,9 @@ msgstr "Чемпіонат світу з шахів"
 msgid "Chess computer"
 msgstr "Шаховий комп'ютер"
 
+msgid "Theory"
+msgstr "Теорія"
+
+msgid "Fork"
+msgstr "Вилка"
+

@@ -182,3 +182,9 @@ msgstr "Schachweltmeisterschaft"
 
 msgid "Chess computer"
 msgstr "Schachcomputer"
+
+msgid "Theory"
+msgstr "Theorie"
+
+msgid "Fork"
+msgstr "Gabel"

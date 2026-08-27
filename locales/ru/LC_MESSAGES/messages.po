@@ -199,3 +199,9 @@ msgstr "Чемпионат мира по шахматам"
 
 msgid "Chess computer"
 msgstr "Шахматный компьютер"
+
+msgid "Theory"
+msgstr "Теория"
+
+msgid "Fork"
+msgstr "Вилка"
