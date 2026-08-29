@@ -60,10 +60,10 @@ chmps = {
    1:[f"https://en.wikipedia.org/wiki/Wilhelm_Steinitz", "Wilhelm Steinitz", ", 🇦🇹-🇭🇺-🇺🇸 Austria-Hungary-United States, 1886–1894", "🇺🇸"],
    2:[f"https://en.wikipedia.org/wiki/Emanuel_Lasker", "Emanuel Lasker", ", Germany, 1894-1921", "🇩🇪"],
    3:[f"https://en.wikipedia.org/wiki/Jos%C3%A9_Ra%C3%BAl_Capablanca", "Jose Raul Capablanca", ", Cuba, 1921-1927", "🇨🇺"],
-   4:[f"https://en.wikipedia.org/wiki/Alexander_Alekhine", "Alexander Alekhine", ", 🇷🇺-🇫🇷 Russia-France, 1927-1935", "🇫🇷"],
+   4:[f"https://en.wikipedia.org/wiki/Alexander_Alekhine", " Alexander Alekhine", ", 🇷🇺-🇫🇷 Russia-France, 1927-1935", "🇫🇷"],
    5:[f"https://en.wikipedia.org/wiki/Max_Euwe", "Max Euwe", ", Netherlands, 1935-1937", "🇳🇱"],
    6:[f"https://en.wikipedia.org/wiki/Alexander_Alekhine", "Alexander Alekhine", ", 🇷🇺-🇫🇷 Russia-France, 1937-1946", "🇫🇷"],
-   7:[f"https://en.wikipedia.org/wiki/Mikhail_Botvinnik", "Mikhail Botvinnik", ", Soviet Union, 1948-1957", "🟥"],
+   7:[f"https://en.wikipedia.org/wiki/Mikhail_Botvinnik", " Mikhail Botvinnik", ", Soviet Union, 1948-1957", "🟥"],
    8:[f"https://en.wikipedia.org/wiki/Vasily_Smyslov", "Vasily Smyslov", ", Soviet Union, 1957-1958", "🟥"],
    9:[f"https://en.wikipedia.org/wiki/Mikhail_Botvinnik", "Mikhail Botvinnik", ", Soviet Union, 1958-1960", "🟥"],
    10:[f"https://en.wikipedia.org/wiki/Mikhail_Tal", "Mikhail Tal", ", Soviet Union, 1960-1961", "🟥"],
@@ -75,7 +75,7 @@ chmps = {
    16:[f"https://en.wikipedia.org/wiki/Garry_Kasparov", "Garry Kasparov", ", 🟥-🇷🇺 Soviet Union-Russia, 1985-1993", "🇷🇺"],
    17:[f"https://en.wikipedia.org/wiki/Anatoly_Karpov", "Anatoly Karpov", ", Russia, 1993-1999", "🇷🇺"],
    18:[f"https://en.wikipedia.org/wiki/Alexander_Khalifman", "Alexander Khalifman", ", Russia, 1999-2000", "🇷🇺"],
-   19:[f"https://en.wikipedia.org/wiki/Viswanathan_Anand", "Viswanathan Anand", ", India, 2000-2002", "🇮🇳"],
+   19:[f"https://en.wikipedia.org/wiki/Viswanathan_Anand", " Viswanathan Anand", ", India, 2000-2002", "🇮🇳"],
    20:["https://en.wikipedia.org/wiki/Ruslan_Ponomariov", "Ruslan Ponomariov", ", Ukraine, 2002-2004", "🇺🇦"],
    21:[f"https://en.wikipedia.org/wiki/Rustam_Kasimdzhanov", "Rustam Kasimdzhanov", ", Uzbekistan, 2004-2005", "🇺🇿"],
    22:[f"https://en.wikipedia.org/wiki/Veselin_Topalov", "Veselin Topalov", ", Bulgaria, 2005-2006", "🇧🇬"],
@@ -339,7 +339,7 @@ def main(board):
     with col1:
     
         try:
-                
+#            st.image(GAMEPGNFILENAME)   
             streamlit_image_coordinates(
                 GAMEPGNFILENAME,
                 key="pil",
