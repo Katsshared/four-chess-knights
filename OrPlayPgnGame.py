@@ -178,7 +178,12 @@ def dummyMove(board):
     board.pop()
 
 def saveBoard(board):
-    img = pyvips.Image.new_from_buffer(chess.svg.board(board).encode(), options="")
+#    img = pyvips.Image.new_from_buffer(chess.svg.board(board).encode(), options="")
+#    img.pngsave(GAMEPGNFILENAME)
+    img1 = pyvips.Image.new_from_buffer(chess.svg.board(board).encode(), options="")
+    img2 = pyvips.Image.new_from_file("images/control.png", access="sequential")
+    img = img1.join(img2, "vertical", expand=True)
+
     img.pngsave(GAMEPGNFILENAME)
  
     
@@ -214,7 +219,6 @@ def stepGame(board, step=1):
     size = len(moves)
     act = st.session_state.actionga
 #    print("IDX ACT SIZE", idx, act, size)
-
     
     if act == 0:
         if idx == 0 and step < 0:
@@ -272,10 +276,37 @@ def endGame(board):
 #        board.set_piece_at(move.to_square, fr_pc)
 #       board.remove_piece_at(move.from_square)
        
+
+def coors2square(x, y):
+    sq_size = 70
+    br_size = 0
+    col = round((x-br_size)/sq_size)
+    row = round((y-br_size)/sq_size)
+#    print("row=", row, " col=", col)
+    return col
     
 def add_point():
     rv = st.session_state["pil"]
-#    print(rv)
+#    print("pil ", rv)
+    off = 15
+    if rv["x1"] != rv["x2"] or rv["y1"] != rv["y2"]:
+        return
+    if rv["x1"] > rv["width"] - 160 or rv["y1"] < rv["width"] + off:
+#        print("RETURN")
+        return
+        
+    rv = coors2square(rv["x1"], rv["y1"])
+    if rv == 0:
+        initGame(st.session_state.boardga)
+    elif rv == 1:
+        stepGame(st.session_state.boardga, -1)
+    elif rv == 2:
+        stepGame(st.session_state.boardga)
+    elif rv == 3:
+        endGame(st.session_state.boardga)
+       
+    return
+
 
 def set_board(board, side = chess.WHITE):    
     bd = makeBoard(board, side)    
@@ -347,16 +378,7 @@ def main(board):
                 on_click=add_point
                 )
 
-            with st.container(horizontal=True, horizontal_alignment="left"):
-                bb = st.button("|<-")
-                bl = st.button("<-")
-                br = st.button("->")
-                be = st.button("->|")
-                if bb: initGame(board)
-                if be: endGame(board)
-                if bl: stepGame(board, -1)
-                if br: stepGame(board)
-                
+            with st.container(horizontal=True, horizontal_alignment="left"):                
                 fname = "games/" + game_sel + ".pgn"
                 with open(fname, "r") as file:
                     st.download_button(

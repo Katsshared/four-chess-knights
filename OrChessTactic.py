@@ -165,7 +165,10 @@ def clearBoard(board):
     board.clear()
       
 def saveBoard(board):
-    img = pyvips.Image.new_from_buffer(chess.svg.board(board).encode(), options="")
+    img1 = pyvips.Image.new_from_buffer(chess.svg.board(board).encode(), options="")
+    img2 = pyvips.Image.new_from_file("images/control.png", access="sequential")
+    img = img1.join(img2, "vertical", expand=True)
+
     img.pngsave(TACTICFILENAME)
 
 def popMove(board):
@@ -235,7 +238,7 @@ def endExample(board):
     clearHistory()
     moves = st.session_state.movesta
     size = len(moves)
-    print(moves)
+#    print(moves)
     for i in range(0, size):
         board.push(moves[i])
         addHistory(moves[i])
@@ -294,8 +297,35 @@ def selectExample(fdict, tactic_sel):
         st.session_state.historyta = []
         
         initExample(st.session_state.boardta)
+
+def coors2square(x, y):
+    sq_size = 70
+    br_size = 0
+    col = round((x-br_size)/sq_size)
+    row = round((y-br_size)/sq_size)
+#    print("row=", row, " col=", col)
+    return col
       
 def add_point():
+    rv = st.session_state["pil"]
+#    print("pil ", rv)
+    off = 15
+    if rv["x1"] != rv["x2"] or rv["y1"] != rv["y2"]:
+        return
+    if rv["x1"] > rv["width"] - 160 or rv["y1"] < rv["width"] + off:
+#        print("RETURN")
+        return
+        
+    rv = coors2square(rv["x1"], rv["y1"])
+    if rv == 0:
+        initExample(st.session_state.boardta)
+    elif rv == 1:
+        stepExample(st.session_state.boardta, -1)
+    elif rv == 2:
+        stepExample(st.session_state.boardta)
+    elif rv == 3:
+        endExample(st.session_state.boardta)
+       
     return
 
 def main(fdict):
@@ -307,24 +337,13 @@ def main(fdict):
     with col1:
     
         try:
-            
             streamlit_image_coordinates(
                 TACTICFILENAME,
                 key="pil",
                 click_and_drag=True,
                 on_click=add_point
             )
-            
-            with st.container(horizontal=True, horizontal_alignment="left"):
-                bb = st.button("|<-")
-                bl = st.button("<-")
-                br = st.button("->")
-                be = st.button("->|")
-                if bb: initExample(st.session_state.boardta)
-                if be: endExample(st.session_state.boardta)
-                if bl: stepExample(st.session_state.boardta, -1)
-                if br: stepExample(st.session_state.boardta)
-            
+                        
         except Exception as e:
             st.error(f"Failed:\n {e}")
             
