@@ -9,9 +9,11 @@ localizator = gettext.translation('messages', localedir='locales', languages=[st
 localizator.install() 
 _ = localizator.gettext 
 
+st.logo("images/FourKnights.png")
+
 st.title(_("About us"))
 
-st.logo("images/FourKnights.png")
+st.image("images/OctouberFest.png")
 
 st.header(_("We are the Four Chess Knights club"))
 
