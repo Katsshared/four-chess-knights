@@ -424,7 +424,7 @@ def main(board):
     
         try:
 #            st.image(GAMEPGNFILENAME)
-            st.write(st.session_state.pgnfig)   
+#            st.write(st.session_state.pgnfig)   
             streamlit_image_coordinates(
                 GAMEPGNFILENAME,
                 key="pil",
