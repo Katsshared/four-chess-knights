@@ -9,10 +9,10 @@ import chess.svg
 
 import gettext
 
-PLAYAIFILENAME = "playai.png"
+import OrPlayPgnGame
 
-
-
+IMGDIR = "images/"
+PLAYAIFILENAME = IMGDIR+st.session_state.paifig
 
 # this module implement's Tomasz Michniewski's Simplified Evaluation Function
 # https://www.chessprogramming.org/Simplified_Evaluation_Function
@@ -404,6 +404,8 @@ def get_boardai():
 
 if "boardai" not in st.session_state:
     st.session_state.boardai = get_boardai()
+    OrPlayPgnGame.figNumber("pai")
+
 
 #@st.dialog("Choose promotion", dismissible=True)
 def choosePromotion():

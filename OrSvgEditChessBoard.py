@@ -9,10 +9,13 @@ import chess.svg
 
 import gettext
 
+import OrPlayPgnGame
 #import sys
 #st.status("PLATFORM "+ sys.platform)
 
-PUZZLEFILENAME = "puzzle.png"
+
+IMGDIR = "images/"
+PUZZLEFILENAME = IMGDIR+st.session_state.puzfig
 
 if "sellang" not in st.session_state:
     st.session_state.sellang ="en"
@@ -29,6 +32,7 @@ def get_boarded():
 
 if "boarded" not in st.session_state:
     st.session_state.boarded = get_boarded()
+    OrPlayPgnGame.figNumber("puz")
 
 def render_svg(svg_string):
     """Renders the given svg string."""
@@ -168,7 +172,7 @@ def stfish(board):
             st.download_button(
                 label=_("Download"),
                 data=file,
-                file_name=PUZZLEFILENAME,
+                file_name=st.session_state.puzfig,
                 mime="image/png"
             )                           
     except Exception as e:

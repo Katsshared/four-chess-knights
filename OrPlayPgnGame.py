@@ -9,7 +9,11 @@ import chess.pgn
 
 import gettext
 
-GAMEPGNFILENAME = "gamepgn.png"
+import glob
+
+
+IMGDIR = "images/"
+GAMEPGNFILENAME = IMGDIR+st.session_state.pgnfig
 VIDEO_URL = "https://www.youtube.com/watch?v=1FLIthk5nag"
 
 
@@ -88,12 +92,61 @@ chmps = {
 
 st.title(_("Watch"))
 
+def nextNumber(fname="pgn"):
+    res = glob.glob(IMGDIR + fname + "*.png", recursive=False)
+    res = sorted(res)
+
+    prevcnt = 0
+    for file in res:
+        
+        if file == IMGDIR + fname + ".png":
+            continue
+
+        nextcnt = int(file[10:-4])
+
+        if prevcnt == 0:
+            if nextcnt > 1:
+                return prevcnt + 1
+            
+            prevcnt = nextcnt
+            continue
+
+        if prevcnt + 1 < nextcnt:
+            return prevcnt + 1
+        
+        prevcnt += 1
+     
+    return prevcnt + 1
+
+    
+def figNumber(fname="pgn"):
+    import shutil      
+   
+    fignumber = nextNumber(fname)
+    srcname  = IMGDIR+fname+".png"
+    dstname = IMGDIR+fname+str(fignumber)+".png"
+    with open(srcname, "rb") as src, open(dstname, "xb") as dst:
+        shutil.copyfileobj(src, dst)
+        sname = fname+str(fignumber)+".png"
+        if fname == "pgn":
+            st.session_state.pgnfig = sname
+        elif fname == "tac":
+            st.session_state.tacfig = sname
+        elif fname == "pli":
+            st.session_state.plifig = sname
+        elif fname == "pai":
+            st.session_state.paifig = sname
+        elif fname == "puz":
+            st.session_state.puzfig = sname
+
+
 def get_boardga():
     board_ga = chess.Board()
     return board_ga
 
 if "boardga" not in st.session_state:
     st.session_state.boardga = get_boardga()
+    figNumber("pgn")
 
     
 def showHistory():

@@ -7,11 +7,14 @@ import chess
 import chess.svg
 import gettext
 
+import OrPlayPgnGame
+
 localizator = gettext.translation('messages', localedir='locales', languages=[st.session_state.sellang])
 localizator.install() 
 _ = localizator.gettext 
 
-TACTICFILENAME = "tactic_fork.png"
+IMGDIR = "images/"
+TACTICFILENAME = IMGDIR+st.session_state.tacfig
 
 en_tenpr = _('''
 Basic Tactical Techniques
@@ -136,6 +139,7 @@ def get_boardta():
 
 if "boardta" not in st.session_state:
     st.session_state.boardta = get_boardta()
+    OrPlayPgnGame.figNumber("tac")
 
 def clearHistory():
     st.session_state.historyta = []

@@ -32,6 +32,9 @@ import streamlit as st
 from streamlit_image_coordinates import streamlit_image_coordinates
 import gettext
 
+import glob
+import os
+
 langs = ['en ' + "🇬🇧", 'de ' + "🇩🇪", 'ru ' + "🇷🇺", 'ua ' + "🇺🇦",]
 
 lang_sel = st.sidebar.selectbox(" ", langs)
@@ -43,6 +46,14 @@ localizator.install()
 _ = localizator.gettext 
 
 
+if "pgnfig" not in st.session_state:
+    st.session_state.pgnfig = "pgn.png"
+    st.session_state.tacfig = "tac.png"
+    st.session_state.plifig = "pli.png"
+    st.session_state.paifig = "pai.png"
+    st.session_state.puzfig = "puz.png"
+
+
 @st.dialog(" ", dismissible=True, on_dismiss="rerun")
 def on_click():
     st.header("🇬🇧" + " Four Chess Knights Club") 
@@ -51,6 +62,38 @@ def on_click():
     st.header("🇺🇦" + " Клуб чотирьох шахових лицарів")
 with st.sidebar:
     streamlit_image_coordinates("images/FourKnights.png", key="global", on_click=on_click)    
+
+IMGDIR = "images/"
+
+def listPngs(fname="pgn", sname=st.session_state.pgnfig):
+    # https://www.pythonmorsels.com/datetime-arithmetic/    
+    from datetime import datetime
+    from datetime import timedelta
+    
+    res = glob.glob(IMGDIR + fname + "*.png", recursive=False)
+    res = sorted(res, reverse=False)
+
+    for file in res:
+        c_timestamp = os.path.getctime(file)
+        c_datestamp = datetime.fromtimestamp(c_timestamp)
+#        minutes = timedelta(minutes=1)
+        hours = timedelta(hours=12)
+#        days = timedelta(days=7)
+        
+        if file == IMGDIR + fname + ".png" or file == IMGDIR + sname:
+            continue
+        
+        if datetime.now() - hours > c_datestamp:
+            os.unlink(file)
+            print("UNLINK", file)          
+
+@st.fragment(run_every=360, parallel=True)
+def delFig():
+    listPngs("pgn", sname=st.session_state.pgnfig)
+    listPngs("tac", sname=st.session_state.tacfig)
+    listPngs("pli", sname=st.session_state.plifig)
+    listPngs("pai", sname=st.session_state.paifig)
+    listPngs("puz", sname=st.session_state.puzfig)
                 
 pg = st.navigation([
     st.Page("OrHome.py", title=_("Four Chess Knights"), icon="🏠"),
@@ -59,15 +102,17 @@ pg = st.navigation([
     st.Page("OrChessDebut.py", title=_("Debut"), icon="♟️"),
     st.Page("OrSvgChessEngine.py", title=_("Play") + " " + _("chess"), icon="♟️"),
     st.Page("OrSvgLichessAi.py", title=_("Play") + " " + _("chess") + " (LICHESS)", icon="♟️"),
-#    st.Page("OrSvgChessStockfish.py", title=_("Play") + " " + _("chess"), icon="♟️"),
+#    st.Page("OrSvgChessStockfish.py", title=_("Play") + " " + _("chess") + " (STOCKFISH)", icon="♟️"),
     st.Page("OrChessPuzzles.py", title=_("Chess puzzles"), icon="♟️"),
     st.Page("OrSvgEditChessBoard.py", title=_("Chess editor"), icon="♟️"),
     st.Page("OrPlayPgnGame.py", title=_("Watch"), icon="🎥"),
     st.Page("OrEmailContact.py", title=_("Contact"), icon="📫"),
+#    st.Page("OrTest.py", title=_("Test"), icon="⏳"),
 ])
 
 pg.run()
     
 if __name__=='__main__':
-    pass
+    delFig()
+    
     

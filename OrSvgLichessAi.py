@@ -9,7 +9,10 @@ import chess.svg
 
 import gettext
 
-PLAYLIFILENAME = "playli.png"
+import OrPlayPgnGame
+
+IMGDIR = "images/"
+PLAYLIFILENAME = IMGDIR+st.session_state.plifig
 
 #
 # lichess_cli_maia1.py
@@ -104,6 +107,7 @@ def get_boardli():
 
 if "boardli" not in st.session_state:
     st.session_state.boardli = get_boardli()
+    OrPlayPgnGame.figNumber("pli")
 
 #@st.dialog("Choose promotion", dismissible=True)
 def choosePromotion():
