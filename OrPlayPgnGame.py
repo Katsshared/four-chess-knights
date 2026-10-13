@@ -119,7 +119,7 @@ def nextNumber(fname="pgn"):
     return prevcnt + 1
 
     
-def figNumber(fname="pgn"):
+def figNumber(fname):
     import shutil      
    
     fignumber = nextNumber(fname)
@@ -423,7 +423,8 @@ def main(board):
     with col1:
     
         try:
-#            st.image(GAMEPGNFILENAME)   
+#            st.image(GAMEPGNFILENAME)
+            st.write(st.session_state.pgnfig)   
             streamlit_image_coordinates(
                 GAMEPGNFILENAME,
                 key="pil",
