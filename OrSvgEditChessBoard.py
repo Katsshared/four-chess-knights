@@ -167,12 +167,13 @@ def stfish(board):
             click_and_drag=True,
             on_click=add_point
             )
-
+        
+        fname = st.session_state.puzfig
         with open(PUZZLEFILENAME, "rb") as file:
             st.download_button(
                 label=_("Download"),
                 data=file,
-                file_name=st.session_state.puzfig,
+                file_name=fname,
                 mime="image/png"
             )                           
     except Exception as e:
