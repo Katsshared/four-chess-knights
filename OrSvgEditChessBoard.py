@@ -32,7 +32,7 @@ def get_boarded():
 
 if "boarded" not in st.session_state:
     st.session_state.boarded = get_boarded()
-#    OrPlayPgnGame.figNumber("puz")
+    OrPlayPgnGame.figNumber("puz")
 
 def render_svg(svg_string):
     """Renders the given svg string."""
