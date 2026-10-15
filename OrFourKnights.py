@@ -113,6 +113,7 @@ pg = st.navigation([
 pg.run()
     
 if __name__=='__main__':
-    delFig()
+#    delFig()
+    pass
     
     
