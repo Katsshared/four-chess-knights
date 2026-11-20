@@ -13,8 +13,6 @@ st.logo("images/FourKnights.png")
 
 st.title(_("About us"))
 
-st.image("images/OctouberFest.png")
-
 st.header(_("We are the Four Chess Knights club"))
 
 #st.image("images/Chessboard.png")
@@ -45,30 +43,11 @@ tenpr = {"en":en_tenpr, "de":de_tenpr, "ru":ru_tenpr, "ua":ua_tenpr, }
 st.write(tenpr[st.session_state.sellang])
 
 st.header(_("Our students' achievements"))
-st.write(" 🟢 " + _("Win") +  " 🟡 "   + _("Draw")+ " 🔴 " + _("Loss"))
 
 # importing the module
 #        '5' : ["", "", "", "", "", "", "", "", "", "", "", "", "" ],
 
 # creating a DataFrame
-dat = {_('Name') : ['Natusja', 'Sasha', 'Misha', 'Ljuba', 'Kiril', 'Matvej', 'Margo', 'Vanja', 'Teo', 'Ilja', 'Milena', 'Jasha', 'Avel'],
-            '1' : ["",          "🟢",   "",         "🟡",   "",     "🟢",       "",     "",     "",     "",     "",     "🟢",       "" ],
-            '2' : ["🔴",        "",     "🟢",       "",     "",     "",         "",     "🟢",   "",     "🔴",   "",     "",         "" ],
-            '3' : ["",          "🔴",   "",         "🔴",   "",     "🔴",       "",     "🟡",   "",     "",     "",     "🟢",       "" ],
-            '4' : ["🟡",        "",     "🟢",       "",     "",     "",         "",     "",     "",     "🟢",   "",     "",         "" ],
-            '5' : ["",          "",     "",         "",     "",     "🟢",       "",     "🟢",   "",     "",     "🔴",   "🟢",       "🟢" ],
-            '6' : ["🔴",        "",     "🟢",       "",     "🔴",   "",         "🟢",   "",     "",     "",     "🟢",   "🟢",       "" ],
-            '7' : ["",          "",     "",         "",     "",     "🔴",       "",     "🟢",   "",     "",     "",     "",         "" ],
-            '8' : ["",          "🔴",   "🟡",       "",     "🔴",   "",         "🔴",   "",     "",     "",     "",     "🟢",       "" ],
-            '9' : ["",          "",     "",         "",     "",     "",         "",     "",     "",     "🟢",   "",     "",         "" ],
-            '10' : ["",          "🟢",   "",         "🔴",   "",     "",         "",     "",     "🔴",   "",     "",     "",         "" ],
-            '11': ["",          "",     "",         "",     "🟢",   "🔴",       "",     "",     "",     "",     "",     "🟢",       "🟢" ],
-            '12': ["🔴",        "",     "🔴",       "",     "🔴",   "🔴",       "",     "🔴",   "",     "",     "🔴",   "",         "🔴" ],
-            '13': ["",          "",     "",         "",     "🔴",   "",         "",     "",     "",     "",     "🔴",   "🟢",       "" ],
-        }
-        
-df = pd.DataFrame(dat, index=['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13'])
-st.dataframe(df)  
 
 def calcItems(data, sym):
     score = []
@@ -102,7 +81,7 @@ def calcScores(data):
         score.append(rv)
     return score 
 
-def makeBars(df):
+def makeBars(df, dat):
     barWidth = 0.25
     fig, ax = plt.subplots(figsize =(12, 8)) 
     
@@ -131,7 +110,7 @@ def makeBars(df):
     plt.legend()
     return fig
 
-def makeOneBar(df):
+def makeOneBar(df, dat):
     barWidth = 0.25
     fig, ax = plt.subplots(figsize =(12, 8)) 
     
@@ -154,9 +133,49 @@ def makeOneBar(df):
     plt.legend()
     return fig
 
-fig = makeBars(df)
-st.pyplot(fig)
+def makeDf(dat):    
+    st.write(" 🟢 " + _("Win") +  " 🟡 "   + _("Draw")+ " 🔴 " + _("Loss"))
 
-fig = makeOneBar(df)
-st.pyplot(fig)
+    index=[str(x+1) for x in range(0, len(dat['1']))]
+    df = pd.DataFrame(dat, index)
+    st.dataframe(df)  
+     
+    fig = makeBars(df, dat)
+    st.pyplot(fig)
+    
+    fig = makeOneBar(df, dat)
+    st.pyplot(fig)
+
+
+dat2 = {_('Name'): ['Matvej', 'Gosha', 'Kiril', 'Ilja', 'Luba', 'Milena'],
+        '1': ["", "🔴", "🔴", "🟢", "🟢", "🟢"],
+        '2': ["🟢", "🟢", "🟢", "🟢", "🟢", "🟢"],
+        '3': ["🟢", "🔴", "🟢", "", "", ""],
+        '4': ["🔴", "🔴", "🔴", "", "", ""],
+        '5': ["🔴", "🔴", "", "", "", "🔴"],
+        '6': ["🔴", "🔴", "", "", "", ""],
+        }
+
+dat = {_('Name') : ['Natusja', 'Sasha', 'Misha', 'Ljuba', 'Kiril', 'Matvej', 'Margo', 'Vanja', 'Teo', 'Ilja', 'Milena', 'Jasha', 'Avel'],
+            '1' : ["",          "🟢",   "",         "🟡",   "",     "🟢",       "",     "",     "",     "",     "",     "🟢",       "" ],
+            '2' : ["🔴",        "",     "🟢",       "",     "",     "",         "",     "🟢",   "",     "🔴",   "",     "",         "" ],
+            '3' : ["",          "🔴",   "",         "🔴",   "",     "🔴",       "",     "🟡",   "",     "",     "",     "🟢",       "" ],
+            '4' : ["🟡",        "",     "🟢",       "",     "",     "",         "",     "",     "",     "🟢",   "",     "",         "" ],
+            '5' : ["",          "",     "",         "",     "",     "🟢",       "",     "🟢",   "",     "",     "🔴",   "🟢",       "🟢" ],
+            '6' : ["🔴",        "",     "🟢",       "",     "🔴",   "",         "🟢",   "",     "",     "",     "🟢",   "🟢",       "" ],
+            '7' : ["",          "",     "",         "",     "",     "🔴",       "",     "🟢",   "",     "",     "",     "",         "" ],
+            '8' : ["",          "🔴",   "🟡",       "",     "🔴",   "",         "🔴",   "",     "",     "",     "",     "🟢",       "" ],
+            '9' : ["",          "",     "",         "",     "",     "",         "",     "",     "",     "🟢",   "",     "",         "" ],
+            '10' : ["",          "🟢",   "",         "🔴",   "",     "",         "",     "",     "🔴",   "",     "",     "",         "" ],
+            '11': ["",          "",     "",         "",     "🟢",   "🔴",       "",     "",     "",     "",     "",     "🟢",       "🟢" ],
+            '12': ["🔴",        "",     "🔴",       "",     "🔴",   "🔴",       "",     "🔴",   "",     "",     "🔴",   "",         "🔴" ],
+            '13': ["",          "",     "",         "",     "🔴",   "",         "",     "",     "",     "",     "🔴",   "🟢",       "" ],
+        }
+
+st.image("images/OctouberFest.png")
+
+makeDf(dat2)
+
+makeDf(dat)
+
 
